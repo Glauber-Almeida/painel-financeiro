@@ -1286,8 +1286,9 @@ async function connectSandbox() {
       headers: { 'X-API-KEY': apiKey }
     });
     const cd = await cr.json();
-    const connectors = (cd.results || []).filter(c => c.hasMFA === false || c.hasMFA === undefined);
-    if (!connectors.length) throw new Error('Nenhum conector sandbox disponível nesta conta.');
+    const connectors = (cd.results || []).filter(c => c.name && c.name.toLowerCase().includes('pluggy'));
+    const allSandbox = cd.results || [];
+    if (!connectors.length) throw new Error('Conector Pluggy Bank não encontrado. Disponíveis: ' + (cd.results||[]).map(c=>c.name).join(', '));
     const connector = connectors[0];
     btn.textContent = '⏳ Conectando ' + connector.name + '…';
     const ir = await fetch('https://api.pluggy.ai/items', {
