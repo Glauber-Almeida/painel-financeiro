@@ -1356,8 +1356,21 @@ function importCSV(event) {
         const label = MONTHS[S.month] + ' ' + S.year;
         ['ext-month','orc-month'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=label; });
       }
-      // Fix balance: use last transaction date's running total or just mark as imported
-      document.getElementById('sb-account').textContent = 'Extrato importado';
+      // Extract real balance from OFX LEDGERBAL
+      if (file.name.toLowerCase().endsWith('.ofx')) {
+        const balM = text.match(/<BALAMT>([^<\r\n]+)/i);
+        if (balM) {
+          const realBal = parseFloat(balM[1].replace(',','.'));
+          if (!isNaN(realBal)) {
+            S.balance = realBal;
+            document.getElementById('kpi-saldo').textContent = brl(realBal);
+          }
+        }
+        // Get account info
+        const accM = text.match(/<ACCTID>([^<\r\n]+)/i);
+        if (accM) document.getElementById('sb-account').textContent = 'Conta ' + accM[1].trim();
+      }
+      document.getElementById('sb-account').textContent = document.getElementById('sb-account').textContent || 'Extrato importado';
       renderAll(); showPage('overview');
       st.textContent = '✅ ' + txs.length + ' transações importadas!';
     } catch (err) { st.textContent = '❌ Erro: ' + err.message; }
@@ -1423,16 +1436,35 @@ function parseOFX(text) {
 
 function guessCategory(desc) {
   const d = desc.toLowerCase();
-  if (/uber|99|taxi|moto|estacion|combustiv|gasolina|posto|pedágio/.test(d)) return 'Transporte';
-  if (/ifood|rappi|mcdon|burguer|pizza|restaur|lanche|padaria|açaí|sushi|bar |cafe |starbucks/.test(d)) return 'Alimentação';
-  if (/salário|salario|pagamento emprego|renda|freelan|transferência recebida/.test(d)) return 'Receita';
-  if (/farmácia|farmacia|drogasil|raia|ultrafarma|hospital|médico|medico|consulta|plano/.test(d)) return 'Saúde';
-  if (/netflix|spotify|amazon prime|hbo|disney|cinema|show|teatro/.test(d)) return 'Entretenimento';
-  if (/amazon|mercado livre|shopee|magazine|americanas|ponto frio|renner|c&a|zara|hm /.test(d)) return 'Compras';
-  if (/escola|faculdade|curso|udemy|alura|estudo|mensalidade/.test(d)) return 'Educação';
-  if (/aluguel|condomin|energia|luz|água|gás|internet|claro|vivo|tim|oi /.test(d)) return 'Moradia';
-  if (/transferência|ted|pix|doc/.test(d)) return 'Transferência';
-  if (/juros|iof|tarifa|seguro|invest|fgts|inss|imposto/.test(d)) return 'Financeiro';
+  // Receita / entrada
+  if (/remuner|juros poup|rend poup|sispag|odoutor|herrero|rallo|salário|salario|freelan/.test(d)) return 'Receita';
+  if (/pix transf.*receb|ted receb/.test(d)) return 'Receita';
+  // Moradia / utilidades
+  if (/copel|cemig|enel|cpfl|coelba|elektro|eletro/.test(d)) return 'Moradia';
+  if (/sanepar|sabesp|cedae|cagece|corsan|saneago|cosanpa/.test(d)) return 'Moradia';
+  if (/condomin|aluguel|shimizu|imoveis|imóveis/.test(d)) return 'Moradia';
+  if (/claro|vivo|tim|oi |net |nextel|telefon|internet|fibra/.test(d)) return 'Moradia';
+  // Saúde
+  if (/farmácia|farmacia|drogasil|raia|ultrafarma|drogaria|medicinal/.test(d)) return 'Saúde';
+  if (/hospital|médico|medico|consulta|unimed|plano|amil|sulamérica|bradesco saúde/.test(d)) return 'Saúde';
+  if (/laborat|exame|clinica|clínica/.test(d)) return 'Saúde';
+  // Financeiro / impostos / boletos
+  if (/receita fed|prefeitura|iptu|ipva|inss|fgts|irpf|darf|gnre/.test(d)) return 'Financeiro';
+  if (/pag tit|pag boleto|dda|da  |itau mc|pers black|uniclass|bradesco|caixa|bco|banco/.test(d)) return 'Financeiro';
+  if (/juros|iof|tarifa|cpmf|anuidade|seguro|previdencia|prev/.test(d)) return 'Financeiro';
+  if (/coaplan|contab|contador/.test(d)) return 'Financeiro';
+  // Transporte
+  if (/uber|99|taxi|cabify|estacion|combustiv|gasolina|posto|ipiranga|shell|pedágio|toll|metrô/.test(d)) return 'Transporte';
+  // Alimentação
+  if (/ifood|rappi|mcdon|burguer|pizza|restaur|lanche|padaria|açaí|sushi|bar |cafe |starbucks|supermercado|mercado|extra |pao de acucar/.test(d)) return 'Alimentação';
+  // Entretenimento
+  if (/netflix|spotify|amazon prime|hbo|disney|cinema|show|teatro|steam|playstation/.test(d)) return 'Entretenimento';
+  // Compras
+  if (/amazon|mercado livre|shopee|magazine|americanas|ponto frio|renner|c&a|zara|hm |pagar.me|pagar me/.test(d)) return 'Compras';
+  // Educação
+  if (/escola|faculdade|curso|udemy|alura|mensalidade|colégio|colegio/.test(d)) return 'Educação';
+  // Transferência PIX genérico
+  if (/pix transf|ted|doc |transferência|transferencia/.test(d)) return 'Transferência';
   return 'Outros';
 }
 
