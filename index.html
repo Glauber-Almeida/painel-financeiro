@@ -612,6 +612,7 @@
         </div>
         <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn btn-primary" onclick="connectBank()" id="btn-connect">🏦 Conectar Itaú</button>
+          <button class="btn btn-outline" onclick="connectSandbox()" id="btn-sandbox" style="background:#f0fdf4;border-color:#10b981;color:#065f46">🧪 Testar Sandbox</button>
           <button class="btn btn-outline" onclick="refreshData()">🔄 Sincronizar</button>
           <button class="btn btn-outline" onclick="disconnectBank()" id="btn-disconnect" style="display:none;color:var(--danger)">Desconectar</button>
         </div>
@@ -634,6 +635,22 @@
           <input type="password" class="form-input" id="cfg-secret" placeholder="••••••••••••••••">
         </div>
         <button class="btn btn-primary" onclick="saveCredentials()">💾 Salvar Credenciais</button>
+      </div>
+
+      <!-- Importar CSV -->
+      <div class="card" style="margin-bottom:16px;border:2px dashed #e2e8f0">
+        <div style="font-size:.95rem;font-weight:700;margin-bottom:6px">📂 Importar Extrato do Itaú (CSV / OFX)</div>
+        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:12px">
+          No app ou site do Itaú: <b>Extrato → Exportar → CSV</b>. Depois selecione o arquivo abaixo.
+          Seus dados ficam 100% no navegador, nada é enviado para nenhum servidor.
+        </p>
+        <label style="display:inline-block;cursor:pointer">
+          <input type="file" id="csv-file" accept=".csv,.ofx,.txt" style="display:none" onchange="importCSV(event)">
+          <span class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px">
+            📁 Selecionar arquivo...
+          </span>
+        </label>
+        <span id="csv-status" style="font-size:.82rem;margin-left:10px;color:var(--text-muted)"></span>
       </div>
 
       <div class="alert alert-info">
@@ -1238,7 +1255,7 @@ async function connectBank() {
         localStorage.setItem('pfy_item',item.id);
         S.isDemo=false;
         document.getElementById('demo-banner').style.display='none';
-        document.getElementById('mob-tag').textContent='AO VIVO';
+        document.getElementById('mob-tag').textContent = localStorage.getItem('pfy_sandbox') ? 'SANDBOX' : 'AO VIVO';
         await loadRealData();
         setConnectionUI(true);
         showPage('overview');
@@ -1253,9 +1270,151 @@ async function connectBank() {
   }
 }
 
+// ════════════════════════════════════════════════════
+//  PLUGGY SANDBOX — conecta banco de teste sem precisar de produção
+// ════════════════════════════════════════════════════
+async function connectSandbox() {
+  if (!S.clientId || !S.clientSecret) {
+    alert('Insira suas credenciais Pluggy primeiro e clique em Salvar Credenciais.');
+    return;
+  }
+  const btn = document.getElementById('btn-sandbox');
+  btn.textContent = '⏳ Buscando sandbox…'; btn.disabled = true;
+  try {
+    const apiKey = await pluggyApiKey();
+    const cr = await fetch('https://api.pluggy.ai/connectors?sandbox=true', {
+      headers: { 'X-API-KEY': apiKey }
+    });
+    const cd = await cr.json();
+    const connectors = (cd.results || []).filter(c => c.hasMFA === false || c.hasMFA === undefined);
+    if (!connectors.length) throw new Error('Nenhum conector sandbox disponível nesta conta.');
+    const connector = connectors[0];
+    btn.textContent = '⏳ Conectando ' + connector.name + '…';
+    const ir = await fetch('https://api.pluggy.ai/items', {
+      method: 'POST',
+      headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ connectorId: connector.id, parameters: { user: 'user-ok', password: 'password-ok' } })
+    });
+    const item = await ir.json();
+    if (item.code || item.error) throw new Error(item.message || item.code || JSON.stringify(item));
+    btn.textContent = '⏳ Aguardando dados…';
+    for (let i = 0; i < 10; i++) {
+      await new Promise(res => setTimeout(res, 3000));
+      const sr = await fetch('https://api.pluggy.ai/items/' + item.id, { headers: { 'X-API-KEY': apiKey } });
+      const st = await sr.json();
+      if (st.status === 'UPDATED' || st.status === 'PARTIAL_SUCCESS') break;
+      if (st.status === 'LOGIN_ERROR' || st.status === 'ERROR') throw new Error('Erro sandbox: ' + st.status);
+    }
+    S.itemId = item.id;
+    localStorage.setItem('pfy_item', item.id);
+    localStorage.setItem('pfy_sandbox', '1');
+    S.isDemo = false;
+    document.getElementById('demo-banner').style.display = 'none';
+    document.getElementById('mob-tag').textContent = 'SANDBOX';
+    await loadRealData();
+    setConnectionUI(true);
+    showPage('overview');
+    alert('✅ Sandbox conectado! Dados de teste carregados.');
+  } catch (e) {
+    btn.textContent = '🧪 Testar Sandbox';
+    btn.disabled = false;
+    alert('Erro sandbox: ' + e.message);
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  IMPORTAR CSV / OFX DO ITAÚ
+// ════════════════════════════════════════════════════
+function importCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const st = document.getElementById('csv-status');
+  st.textContent = '⏳ Lendo arquivo…';
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const text = e.target.result;
+      let txs = file.name.toLowerCase().endsWith('.ofx') ? parseOFX(text) : parseCSVItau(text);
+      if (!txs.length) throw new Error('Nenhuma transação encontrada. Verifique o formato do arquivo.');
+      const existing = S.isDemo ? [] : S.txs;
+      const ids = new Set(existing.map(t => t.id));
+      S.txs = [...existing, ...txs.filter(t => !ids.has(t.id))].sort((a, b) => new Date(b.date) - new Date(a.date));
+      if (S.isDemo) { S.balance = S.txs.reduce((s, t) => s + t.amount, 0); document.getElementById('kpi-saldo').textContent = brl(S.balance); }
+      S.isDemo = false;
+      document.getElementById('demo-banner').style.display = 'none';
+      document.getElementById('mob-tag').textContent = 'CSV';
+      setConnectionUI(true);
+      document.getElementById('last-sync').textContent = 'Importado: ' + file.name;
+      renderAll(); showPage('overview');
+      st.textContent = '✅ ' + txs.length + ' transações importadas!';
+    } catch (err) { st.textContent = '❌ Erro: ' + err.message; }
+  };
+  reader.readAsText(file, 'latin1');
+}
+
+function parseCSVItau(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const txs = [];
+  let dataIdx = -1, descIdx = -1, valIdx = -1;
+  for (let i = 0; i < Math.min(10, lines.length); i++) {
+    const cols = lines[i].split(/[;,]/).map(c => c.replace(/"/g, '').trim().toLowerCase());
+    const dIdx = cols.findIndex(c => c.includes('data') || c.includes('lançamento'));
+    const vIdx = cols.findIndex(c => c.includes('valor') || c.includes('value'));
+    const hIdx = cols.findIndex(c => c.includes('histórico') || c.includes('descri') || c.includes('memo'));
+    if (dIdx >= 0 && vIdx >= 0) { dataIdx = dIdx; valIdx = vIdx; descIdx = hIdx >= 0 ? hIdx : (dIdx === 0 ? 1 : 0); lines.splice(0, i + 1); break; }
+  }
+  if (dataIdx < 0) { dataIdx = 0; descIdx = 1; valIdx = 2; }
+  const SEP = lines[0] && lines[0].includes(';') ? ';' : ',';
+  lines.forEach((line, idx) => {
+    if (!line || line.startsWith('Saldo') || line.startsWith('Total')) return;
+    const cols = line.split(SEP).map(c => c.replace(/"/g, '').trim());
+    if (cols.length < 3) return;
+    let dateStr = cols[dataIdx] || '', date;
+    if (/\d{2}\/\d{2}\/\d{4}/.test(dateStr)) { const [d, m, y] = dateStr.split('/'); date = y + '-' + m.padStart(2,'0') + '-' + d.padStart(2,'0'); }
+    else if (/\d{4}-\d{2}-\d{2}/.test(dateStr)) { date = dateStr.substring(0,10); }
+    else return;
+    const amount = parseFloat((cols[valIdx] || '').replace(/R\$\s*/,'').replace(/\./g,'').replace(',','.'));
+    if (isNaN(amount) || amount === 0) return;
+    const description = cols[descIdx] || 'Sem descrição';
+    txs.push({ id: 'csv-' + idx + '-' + date, description, amount, date, category: guessCategory(description), type: amount < 0 ? 'DEBIT' : 'CREDIT' });
+  });
+  return txs;
+}
+
+function parseOFX(text) {
+  const txs = [];
+  (text.match(/<STMTTRN>[\s\S]*?<\/STMTTRN>/gi) || []).forEach((block, idx) => {
+    const get = tag => { const m = block.match(new RegExp('<' + tag + '>([^<]+)', 'i')); return m ? m[1].trim() : ''; };
+    const dtRaw = get('DTPOSTED') || get('DTUSER');
+    if (!dtRaw) return;
+    const date = dtRaw.substring(0,4) + '-' + dtRaw.substring(4,6) + '-' + dtRaw.substring(6,8);
+    const amount = parseFloat(get('TRNAMT').replace(',','.'));
+    if (isNaN(amount)) return;
+    const description = get('MEMO') || get('NAME') || 'Sem descrição';
+    txs.push({ id: 'ofx-' + idx, description, amount, date, category: guessCategory(description), type: amount < 0 ? 'DEBIT' : 'CREDIT' });
+  });
+  return txs;
+}
+
+function guessCategory(desc) {
+  const d = desc.toLowerCase();
+  if (/uber|99|taxi|moto|estacion|combustiv|gasolina|posto|pedágio/.test(d)) return 'Transporte';
+  if (/ifood|rappi|mcdon|burguer|pizza|restaur|lanche|padaria|açaí|sushi|bar |cafe |starbucks/.test(d)) return 'Alimentação';
+  if (/salário|salario|pagamento emprego|renda|freelan|transferência recebida/.test(d)) return 'Receita';
+  if (/farmácia|farmacia|drogasil|raia|ultrafarma|hospital|médico|medico|consulta|plano/.test(d)) return 'Saúde';
+  if (/netflix|spotify|amazon prime|hbo|disney|cinema|show|teatro/.test(d)) return 'Entretenimento';
+  if (/amazon|mercado livre|shopee|magazine|americanas|ponto frio|renner|c&a|zara|hm /.test(d)) return 'Compras';
+  if (/escola|faculdade|curso|udemy|alura|estudo|mensalidade/.test(d)) return 'Educação';
+  if (/aluguel|condomin|energia|luz|água|gás|internet|claro|vivo|tim|oi /.test(d)) return 'Moradia';
+  if (/transferência|ted|pix|doc/.test(d)) return 'Transferência';
+  if (/juros|iof|tarifa|seguro|invest|fgts|inss|imposto/.test(d)) return 'Financeiro';
+  return 'Outros';
+}
+
 function disconnectBank() {
-  if (!confirm('Desconectar a conta Itaú? Os dados reais serão removidos.')) return;
+  if (!confirm('Desconectar? Os dados carregados serão removidos.')) return;
   localStorage.removeItem('pfy_item');
+  localStorage.removeItem('pfy_sandbox');
   S.itemId=''; S.isDemo=true; S.balance=8420.35;
   S.txs=makeDemo();
   setConnectionUI(false);
