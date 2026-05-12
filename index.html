@@ -1336,7 +1336,7 @@ function importCSV(event) {
     try {
       const text = e.target.result;
       let txs = file.name.toLowerCase().endsWith('.ofx') ? parseOFX(text) : parseCSVItau(text);
-      if (!txs.length) throw new Error('Nenhuma transação encontrada. Verifique o formato do arquivo.');
+      if (!txs.length) throw new Error('Nenhuma transação encontrada. Arquivo: ' + file.name + ', Tamanho: ' + text.length + ' bytes. Verifique se é um extrato do Itaú válido.');
       const existing = S.isDemo ? [] : S.txs;
       const ids = new Set(existing.map(t => t.id));
       S.txs = [...existing, ...txs.filter(t => !ids.has(t.id))].sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -1383,16 +1383,28 @@ function parseCSVItau(text) {
 }
 
 function parseOFX(text) {
+  // Handles both SGML (Itaú format, no closing tags) and XML OFX formats
   const txs = [];
-  (text.match(/<STMTTRN>[\s\S]*?<\/STMTTRN>/gi) || []).forEach((block, idx) => {
-    const get = tag => { const m = block.match(new RegExp('<' + tag + '>([^<]+)', 'i')); return m ? m[1].trim() : ''; };
+  // Split on <STMTTRN> — works regardless of whether </STMTTRN> exists
+  const parts = text.split(/<STMTTRN>/i);
+  parts.slice(1).forEach(function(block, idx) {
+    // Trim at </STMTTRN> if present
+    const endIdx = block.search(/<\/STMTTRN>/i);
+    if (endIdx > 0) block = block.substring(0, endIdx);
+    const get = function(tag) {
+      const m = block.match(new RegExp('<' + tag + '>([^\r\n<]+)', 'i'));
+      return m ? m[1].trim() : '';
+    };
     const dtRaw = get('DTPOSTED') || get('DTUSER');
-    if (!dtRaw) return;
+    if (!dtRaw || dtRaw.length < 8) return;
+    // Handle "20260502000000[-3:BRT]" or "20260502" — just take first 8 chars
     const date = dtRaw.substring(0,4) + '-' + dtRaw.substring(4,6) + '-' + dtRaw.substring(6,8);
-    const amount = parseFloat(get('TRNAMT').replace(',','.'));
-    if (isNaN(amount)) return;
-    const description = get('MEMO') || get('NAME') || 'Sem descrição';
-    txs.push({ id: 'ofx-' + idx, description, amount, date, category: guessCategory(description), type: amount < 0 ? 'DEBIT' : 'CREDIT' });
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    const amtRaw = get('TRNAMT') || get('AMT') || '';
+    const amount = parseFloat(amtRaw.replace(',','.'));
+    if (isNaN(amount) || amount === 0) return;
+    const description = get('MEMO') || get('NAME') || get('FITID') || 'Sem descrição';
+    txs.push({ id: 'ofx-' + idx + '-' + date, description, amount, date, category: guessCategory(description), type: amount < 0 ? 'DEBIT' : 'CREDIT' });
   });
   return txs;
 }
