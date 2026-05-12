@@ -1341,11 +1341,23 @@ function importCSV(event) {
       const ids = new Set(existing.map(t => t.id));
       S.txs = [...existing, ...txs.filter(t => !ids.has(t.id))].sort((a, b) => new Date(b.date) - new Date(a.date));
       if (S.isDemo) { S.balance = S.txs.reduce((s, t) => s + t.amount, 0); document.getElementById('kpi-saldo').textContent = brl(S.balance); }
-      S.isDemo = false;
+      // Clear any stale Pluggy item so state is clean
+      localStorage.removeItem('pfy_item'); localStorage.removeItem('pfy_sandbox');
+      S.itemId = ''; S.isDemo = false;
       document.getElementById('demo-banner').style.display = 'none';
       document.getElementById('mob-tag').textContent = 'CSV';
       setConnectionUI(true);
       document.getElementById('last-sync').textContent = 'Importado: ' + file.name;
+      // Navigate to most recent month with data
+      const mostRecent = S.txs[0]; // already sorted desc by date
+      if (mostRecent) {
+        const d = new Date(mostRecent.date + 'T12:00:00');
+        S.month = d.getMonth(); S.year = d.getFullYear();
+        const label = MONTHS[S.month] + ' ' + S.year;
+        ['ext-month','orc-month'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=label; });
+      }
+      // Fix balance: use last transaction date's running total or just mark as imported
+      document.getElementById('sb-account').textContent = 'Extrato importado';
       renderAll(); showPage('overview');
       st.textContent = '✅ ' + txs.length + ' transações importadas!';
     } catch (err) { st.textContent = '❌ Erro: ' + err.message; }
