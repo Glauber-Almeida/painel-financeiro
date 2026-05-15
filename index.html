@@ -332,8 +332,60 @@
     <div class="lock-icon">🔐</div>
     <h2>Painel Financeiro</h2>
     <p id="lock-sub">Digite sua senha para acessar</p>
-    <input type="password" class="lock-input" id="lock-pw" onkeydown="if(event.key==='Enter') doLogin()"
-           placeholder="••••••••" ���W�F�v��&�b�WfV�B�W����tV�FW"r�F���v�ₒ �WF�6���WFS�&7W'&V�B�77v�&B#��'WGF��6�73�&��6��'F�"��6Ɩ6��&F���v�ₒ#�V�G&#��'WGF����F�b6�73�&��6��W'""�C�&��6��W'"#���F�c��F�b6�73�&��6�ֆ��B"�C�&��6�ֆ��B"7G��S�&F�7������R#�&��V�&�6W76�6V�F�v�FF6W,:FVf��F6���7V6V�W&��V�FR���F�c��7�6�73�&��6��6��vR�r"�C�&��6��6��vR���"7G��S�&F�7������R"��6Ɩ6��&6��vUt��FR��#��FW&"6V���7����F�c���F�cࠣ���)Y)Y)Y)Y)Y)Y����F�b�C�&"7G��S�&F�7������R#��F�b6�73�&#ࠢ���)H)H4�DT$")H)H�����b6�73�'6�FV&"#��F�b6�73�'6�FV&"�'&�B#�ƃ�	�+��V�f���6V�&�������C�'6"�66�V�B#�6��F�F;������F�c��F�b6�73�'6�FV&"��b#��'WGF��6�73�&�b֗FV�7F�fR"��6Ɩ6��'6��uvR�v�fW'f�Wrr�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#��&V7B��#2"��#2"v�GF��#r"�V�v�C�#r"'��#"���&V7B��#B"��#2"v�GF��#r"�V�v�C�#r"'��#"���&V7B��#2"��#B"v�GF��#r"�V�v�C�#r"'��#"���&V7B��#B"��#B"v�GF��#r"�V�v�C�#r"'��#"����7fs�f�<:6�vW&����'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�vW�G&F�r�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#��F�C�$ӒT�v""�"'c&"""&�"""�%cv""�"�&��""���&V7B��#�"��#2"v�GF��#b"�V�v�C�#B"'��#"���Ɩ�R��#�"��#""�#�#R"�#�#""���Ɩ�R��#�"��#b"�#�#2"�#�#b"����7fs�W�G&F���'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�w&V6V�F2r�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#���ǖƖ�R���G3�##2b2�RR�R��R�R�"����ǖƖ�R���G3�#rb#2b#2""����7fs�&V6V�F0���'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�v�&6�V�F�r�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#��6�&6�R7��#""7��#""#�#"���F�C�$�"gcf�B""����7fs��,:v�V�F���'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�v�V�6�r�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#���ǖƖ�R���G3�##""�"R#�2b""""����7fs��V�6����'WGF����'WGF��6ass="nav-item" onclick="showPage('config')">
+    <input type="password" class="lock-input" id="lock-pw"
+           placeholder="••••••••"
+           onkeydown="if(event.key==='Enter') doLogin()"
+           autocomplete="current-password">
+    <button class="lock-btn" onclick="doLogin()">Entrar</button>
+    <div class="lock-err" id="lock-err"></div>
+    <div class="lock-hint" id="lock-hint" style="display:none">
+      Primeiro acesso: a senha digitada será definida como sua senha permanente.
+    </div>
+    <span class="lock-change-pw" id="lock-change-lnk" style="display:none" onclick="changePwMode()">Alterar senha</span>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app" style="display:none">
+<div class="app">
+
+  <!-- ── SIDEBAR ── -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <h1>💰 Painel Financeiro</h1>
+      <p id="sb-account">Conta Itaú</p>
+    </div>
+    <div class="sidebar-nav">
+      <button class="nav-item active" onclick="showPage('overview')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>Visão Geral
+      </button>
+      <button class="nav-item" onclick="showPage('extrato')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/>
+        </svg>Extrato
+      </button>
+      <button class="nav-item" onclick="showPage('receitas')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+          <polyline points="17 6 23 6 23 12"/>
+        </svg>Receitas
+      </button>
+      <button class="nav-item" onclick="showPage('orcamento')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+        </svg>Orçamento
+      </button>
+      <button class="nav-item" onclick="showPage('mensal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>Mensal
+      </button>
+      <button class="nav-item" onclick="showPage('config')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"/>
           <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
@@ -689,7 +741,7 @@ function doPost(e) {
     <button class="bnav-item" onclick="showPage('config')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="3"/>
-        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51 V3a2 2 0 010 4v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
       </svg><span>Config</span>
     </button>
   </nav>
@@ -698,22 +750,21 @@ function doPost(e) {
 </div><!-- #app -->
 
 <script>
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  CONSTANTES
 // ═══════════════════════════════════════════════════════
-const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
-                'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
 const CATS = {
   'Receita':           { icon:'💰', color:'#059669', bg:'#ecfdf5' },
   'Rendimentos':       { icon:'📈', color:'#0891b2', bg:'#ecfeff' },
   'Cartão de Crédito': { icon:'💳', color:'#7c3aed', bg:'#f5f3ff' },
   'Alimentação':       { icon:'🍔', color:'#f97316', bg:'#fff7ed' },
-  'Transporte':        { icon:'🚗', color:'#0ea5e9', bg:'#f0f9ff' },
-  'Moradia':           { icon:'🏠', color:'#8b5cf6', bg:'#f5f3ff' },
+  'Transporte':        { icon:'🚑', color:'#0ea5e9', bg:'#f0f9ff' },
+  'Moradia':           { icon:'🏢', color:'#8b5cf6', bg:'#f5f3ff' },
   'Saúde':             { icon:'💊', color:'#10b981', bg:'#ecfdf5' },
   'Entretenimento':    { icon:'🎬', color:'#ec4899', bg:'#fdf2f8' },
-  'Educação':          { icon:'📚', color:'#6366f1', bg:'#eef2ff' },
+  'Educaçóo':          { icon:'📚', color:'#6366f1', bg:'#eef2ff' },
   'Compras':           { icon:'🛍️', color:'#f59e0b', bg:'#fffbeb' },
   'Financeiro':        { icon:'🏦', color:'#1a56db', bg:'#eff6ff' },
   'Transferência':     { icon:'↔️',  color:'#64748b', bg:'#f8fafc' },
@@ -721,7 +772,7 @@ const CATS = {
 };
 
 // Categorias de despesa (excluídas receitas e cartão)
-const EXPENSE_CATS = ['Alimentação','Transporte','Moradia','Saúde',
+const EXPENSE_CATS = ['Alimentaçóo','Transporte','Moradia','Saúde',
                       'Entretenimento','Educação','Compras','Financeiro','Outros','Transferência'];
 
 const DEFAULT_BUDGETS = {
@@ -740,8 +791,7 @@ const INCOME_SOURCES = {
 };
 
 // ═══════════════════════════════════════════════════════
-//  ESTADO GLOBAL
-// ═══════════════════════════════════════════════════════
+//  ESTADO GLOBAL�-� ═══════════════════════════════════════════════════════
 const S = {
   page:    'overview',
   month:   new Date().getMonth(),
@@ -794,7 +844,7 @@ function changePwMode() {
   setTimeout(() => document.getElementById('cfg-pw1').focus(), 200);
 }
 
-as function changePassword() {
+async function changePassword() {
   const pw1 = document.getElementById('cfg-pw1').value;
   const pw2 = document.getElementById('cfg-pw2').value;
   const msg = document.getElementById('pw-change-msg');
@@ -810,7 +860,7 @@ as function changePassword() {
 
 // ═══════════════════════════════════════════════════════
 //  PERSISTÊNCIA
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 function saveTxs() {
   try {
     localStorage.setItem('pf_txs',     JSON.stringify(S.txs));
@@ -859,7 +909,7 @@ function saveSheetsUrl() {
 }
 
 async function syncToSheets() {
-  const url = localStorage.getItem('pf_sheeheets_url');
+  const url = localStorage.getItem('pf_sheets_url');
   if (!url) { document.getElementById('sheets-status').textContent = '⚠️ Configure a URL do Apps Script primeiro.'; return; }
   const st = document.getElementById('sheets-status');
   st.textContent = '⏳ Sincronizando…';
@@ -1205,7 +1255,7 @@ function drawCatsChart() {
 }
 
 function drawMonthlyChart() {
-  const ctx = document.getElementById('chart-monthly');
+  const ctx = docuocument.getElementById('chart-monthly');
   if (!ctx) return;
   destroyChart('monthly');
   const now = new Date();
