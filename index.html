@@ -29,10 +29,43 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      background: var(--bg); color: var(--text); min-height: 100vh;
     }
+
+    /* ── LOCK SCREEN ── */
+    #lock-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1a56db 60%, #2563eb 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lock-box {
+      background: white; border-radius: 20px; padding: 40px 36px;
+      width: 340px; box-shadow: 0 20px 60px rgba(0,0,0,.3); text-align: center;
+    }
+    .lock-icon { font-size: 2.8rem; margin-bottom: 14px; }
+    .lock-box h2 { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .lock-box p  { font-size: .82rem; color: var(--text-muted); margin-bottom: 24px; }
+    .lock-input {
+      width: 100%; padding: 12px 16px; border: 2px solid var(--border);
+      border-radius: 10px; font-size: 1rem; text-align: center;
+      outline: none; transition: border-color .15s; letter-spacing: .1em;
+    }
+    .lock-input:focus { border-color: var(--primary); }
+    .lock-btn {
+      width: 100%; margin-top: 14px; padding: 13px;
+      background: var(--primary); color: white; border: none;
+      border-radius: 10px; font-size: .95rem; font-weight: 700;
+      cursor: pointer; transition: background .15s;
+    }
+    .lock-btn:hover { background: var(--primary-dark); }
+    .lock-err { color: var(--danger); font-size: .8rem; margin-top: 10px; min-height: 18px; }
+    .lock-hint { font-size: .72rem; color: var(--text-muted); margin-top: 14px; }
+    .lock-change-pw {
+      font-size: .75rem; color: var(--primary); cursor: pointer;
+      margin-top: 10px; display: inline-block; text-decoration: underline;
+    }
+
+    /* ── APP ── */
     .app { display: flex; min-height: 100vh; }
 
     /* ── SIDEBAR ── */
@@ -41,39 +74,25 @@
       background: linear-gradient(180deg, #1e3a8a 0%, #1a56db 100%);
       position: fixed; top: 0; left: 0; height: 100vh;
       display: flex; flex-direction: column;
-      z-index: 100;
-      box-shadow: 2px 0 12px rgba(0,0,0,0.18);
+      z-index: 100; box-shadow: 2px 0 12px rgba(0,0,0,.18);
     }
-    .sidebar-brand {
-      padding: 24px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-    }
+    .sidebar-brand { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,.12); }
     .sidebar-brand h1 { color: #fff; font-size: 1.05rem; font-weight: 700; }
-    .sidebar-brand p  { color: rgba(255,255,255,0.55); font-size: 0.73rem; margin-top: 3px; }
+    .sidebar-brand p  { color: rgba(255,255,255,.55); font-size: .73rem; margin-top: 3px; }
     .sidebar-nav { padding: 16px 12px; flex: 1; }
     .nav-item {
       display: flex; align-items: center; gap: 10px;
       padding: 10px 12px; border-radius: 8px;
-      color: rgba(255,255,255,0.65); cursor: pointer;
+      color: rgba(255,255,255,.65); cursor: pointer;
       transition: all .15s; margin-bottom: 2px;
       font-size: .875rem; font-weight: 500;
       border: none; background: none; width: 100%; text-align: left;
     }
-    .nav-item:hover  { background: rgba(255,255,255,0.12); color: #fff; }
-    .nav-item.active { background: rgba(255,255,255,0.22); color: #fff; }
+    .nav-item:hover  { background: rgba(255,255,255,.12); color: #fff; }
+    .nav-item.active { background: rgba(255,255,255,.22); color: #fff; }
     .nav-item svg    { width: 18px; height: 18px; flex-shrink: 0; }
-    .sidebar-footer {
-      padding: 14px 16px;
-      border-top: 1px solid rgba(255,255,255,0.12);
-    }
-    .sync-info { color: rgba(255,255,255,0.45); font-size: .68rem; text-align: center; }
-    .sync-btn {
-      width: 100%; padding: 8px; margin-top: 8px;
-      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 6px; color: #fff; font-size: .78rem;
-      cursor: pointer; transition: background .15s;
-    }
-    .sync-btn:hover { background: rgba(255,255,255,0.26); }
+    .sidebar-footer  { padding: 14px 16px; border-top: 1px solid rgba(255,255,255,.12); }
+    .sync-info { color: rgba(255,255,255,.45); font-size: .68rem; text-align: center; }
 
     /* ── MAIN ── */
     .main { margin-left: var(--sidebar-w); flex: 1; padding: 28px 28px 48px; }
@@ -85,10 +104,8 @@
 
     /* ── CARDS ── */
     .card {
-      background: var(--card); border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-      border: 1px solid var(--border);
+      background: var(--card); border-radius: 14px; padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); border: 1px solid var(--border);
     }
 
     /* ── KPI GRID ── */
@@ -97,10 +114,9 @@
       gap: 16px; margin-bottom: 24px;
     }
     .kpi-card {
-      background: var(--card); border-radius: 14px;
-      padding: 20px; position: relative; overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,.06);
-      border: 1px solid var(--border);
+      background: var(--card); border-radius: 14px; padding: 20px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); border: 1px solid var(--border);
     }
     .kpi-card::before {
       content:''; position:absolute; top:0; left:0; right:0; height:3px;
@@ -109,6 +125,7 @@
     .kpi-card.green::before  { background: var(--success); }
     .kpi-card.red::before    { background: var(--danger); }
     .kpi-card.purple::before { background: #7c3aed; }
+    .kpi-card.teal::before   { background: #0891b2; }
     .kpi-label {
       font-size: .72rem; font-weight: 700; color: var(--text-muted);
       text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px;
@@ -121,11 +138,21 @@
     .kpi-value.negative { color: var(--danger); }
     .kpi-change { font-size: .73rem; color: var(--text-muted); }
 
-    /* ── CHARTS ROW ── */
-    .charts-row {
-      display: grid; grid-template-columns: 2fr 1fr;
-      gap: 16px; margin-bottom: 24px;
+    /* ── SOURCE GRID ── */
+    .source-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 12px; margin-bottom: 24px;
     }
+    .source-card {
+      background: var(--card); border-radius: 12px; padding: 16px;
+      border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .source-name { font-size: .72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+    .source-value { font-size: 1.2rem; font-weight: 800; color: var(--success); }
+    .source-count { font-size: .7rem; color: var(--text-muted); margin-top: 3px; }
+
+    /* ── CHARTS ── */
+    .charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 24px; }
     .chart-container { position: relative; height: 280px; }
 
     /* ── TRANSACTIONS ── */
@@ -141,19 +168,15 @@
       font-size: 1.15rem; flex-shrink: 0;
     }
     .tx-info { flex: 1; min-width: 0; }
-    .tx-desc {
-      font-size: .875rem; font-weight: 500;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    .tx-desc { font-size: .875rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .tx-meta { font-size: .73rem; color: var(--text-muted); margin-top: 2px; }
     .tx-amount { font-size: .9rem; font-weight: 700; white-space: nowrap; }
     .tx-amount.positive { color: var(--success); }
     .tx-amount.negative { color: var(--danger); }
+    .tx-amount.neutral  { color: var(--text-muted); }
 
     /* ── MONTH SELECTOR ── */
-    .month-selector {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-    }
+    .month-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
     .month-btn {
       width: 32px; height: 32px; border: 1px solid var(--border);
       border-radius: 6px; background: white; cursor: pointer;
@@ -161,9 +184,7 @@
       font-size: 1.1rem; color: var(--text-muted); transition: all .15s;
     }
     .month-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
-    .month-label {
-      font-size: 1rem; font-weight: 600; min-width: 150px; text-align: center;
-    }
+    .month-label { font-size: 1rem; font-weight: 600; min-width: 150px; text-align: center; }
 
     /* ── SEARCH ── */
     .search-bar {
@@ -171,29 +192,16 @@
       background: white; border: 1px solid var(--border);
       border-radius: 8px; padding: 9px 14px; margin-bottom: 16px;
     }
-    .search-bar input {
-      flex: 1; border: none; outline: none;
-      font-size: .875rem; color: var(--text); background: transparent;
-    }
+    .search-bar input { flex: 1; border: none; outline: none; font-size: .875rem; color: var(--text); background: transparent; }
     .search-bar svg { color: var(--text-muted); width: 16px; height: 16px; flex-shrink: 0; }
 
     /* ── BUDGET ── */
     .budget-item { margin-bottom: 18px; }
-    .budget-header {
-      display: flex; justify-content: space-between;
-      align-items: center; margin-bottom: 8px;
-    }
-    .budget-cat {
-      font-size: .875rem; font-weight: 500;
-      display: flex; align-items: center; gap: 8px;
-    }
+    .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .budget-cat { font-size: .875rem; font-weight: 500; display: flex; align-items: center; gap: 8px; }
     .budget-amounts { font-size: .78rem; color: var(--text-muted); }
-    .progress-bar {
-      height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%; border-radius: 4px; transition: width .5s ease;
-    }
+    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 4px; transition: width .5s ease; }
     .progress-fill.ok   { background: var(--success); }
     .progress-fill.warn { background: var(--warning); }
     .progress-fill.over { background: var(--danger); }
@@ -205,41 +213,11 @@
       font-size: .875rem; font-weight: 600;
       cursor: pointer; border: none; transition: all .15s;
     }
-    .btn-primary   { background: var(--primary); color: #fff; }
+    .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-dark); }
-    .btn-outline {
-      background: white; color: var(--text);
-      border: 1px solid var(--border);
-    }
+    .btn-outline { background: white; color: var(--text); border: 1px solid var(--border); }
     .btn-outline:hover { background: var(--bg); }
-
-    /* ── STATUS BADGE ── */
-    .status-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 4px 12px; border-radius: 20px;
-      font-size: .73rem; font-weight: 700;
-    }
-    .status-badge.connected    { background: var(--success-light); color: var(--success); }
-    .status-badge.disconnected { background: #f1f5f9; color: var(--text-muted); }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-
-    /* ── SETUP STEPS ── */
-    .setup-steps {
-      display: grid; grid-template-columns: repeat(3,1fr);
-      gap: 14px; margin: 28px 0;
-    }
-    .setup-step {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 18px;
-    }
-    .step-num {
-      width: 26px; height: 26px; background: var(--primary); color: #fff;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: .78rem; font-weight: 800; margin-bottom: 10px;
-    }
-    .setup-step h4 { font-size: .875rem; font-weight: 600; margin-bottom: 5px; }
-    .setup-step p  { font-size: .78rem; color: var(--text-muted); line-height: 1.55; }
-    .setup-step a  { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .btn-sm { padding: 7px 14px; font-size: .8rem; }
 
     /* ── FORM ── */
     .form-group { margin-bottom: 14px; }
@@ -249,55 +227,33 @@
       border-radius: 8px; font-size: .875rem; color: var(--text);
       background: white; outline: none; transition: border-color .15s;
     }
-    .form-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(26,86,219,.1);
-    }
-
-    /* ── DEMO BANNER ── */
-    .demo-banner {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #fff; padding: 11px 18px; border-radius: 10px;
-      font-size: .82rem; font-weight: 600; margin-bottom: 22px;
-      display: flex; align-items: center; gap: 8px; cursor: pointer;
-    }
-
-    /* ── CRED FORM ── */
-    .cred-form {
-      background: #f8fafc; border: 1px solid var(--border);
-      border-radius: 12px; padding: 20px; margin-bottom: 20px;
-    }
-    .cred-form h4 { font-size: .9rem; font-weight: 700; margin-bottom: 4px; }
-    .cred-form p  {
-      font-size: .79rem; color: var(--text-muted);
-      margin-bottom: 16px; line-height: 1.55;
-    }
-    .cred-form a { color: var(--primary); font-weight: 600; }
+    .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,86,219,.1); }
+    textarea.form-input { font-family: monospace; font-size: .78rem; resize: vertical; }
 
     /* ── ALERT ── */
     .alert {
-      padding: 12px 16px; border-radius: 8px;
-      font-size: .85rem; margin-bottom: 16px;
-      display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
+      padding: 12px 16px; border-radius: 8px; font-size: .85rem;
+      margin-bottom: 16px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
     }
-    .alert-info {
-      background: var(--primary-light); color: var(--primary-dark);
-      border: 1px solid rgba(26,86,219,.18);
-    }
+    .alert-info    { background: var(--primary-light); color: var(--primary-dark); border: 1px solid rgba(26,86,219,.18); }
+    .alert-success { background: var(--success-light); color: #065f46; border: 1px solid rgba(5,150,105,.2); }
+    .alert-warn    { background: var(--warning-light); color: #92400e; border: 1px solid rgba(217,119,6,.2); }
 
     /* ── SUMMARY TABLE ── */
-    .summary-table { width: 100%; border-collapse: collapse; }
+    .summary-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
     .summary-table th {
-      padding: 9px 12px; text-align: left;
-      font-size: .72rem; font-weight: 700; color: var(--text-muted);
+      padding: 9px 10px; text-align: right;
+      font-size: .7rem; font-weight: 700; color: var(--text-muted);
       text-transform: uppercase; letter-spacing: .05em;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
     }
+    .summary-table th:first-child { text-align: left; }
     .summary-table td {
-      padding: 12px 12px; font-size: .875rem;
-      border-bottom: 1px solid var(--border);
+      padding: 10px 10px; border-bottom: 1px solid var(--border); text-align: right;
     }
-    .summary-table tr:last-child td { border-bottom: none; }
+    .summary-table td:first-child { text-align: left; font-weight: 600; }
+    .summary-table tr:last-child td { border-bottom: none; font-weight: 700; background: #f8fafc; }
+    .summary-table tfoot td { font-weight: 700; background: var(--primary-light); color: var(--primary-dark); border-top: 2px solid var(--primary); }
 
     /* ── MISC ── */
     .section-title {
@@ -306,19 +262,17 @@
     }
     .view-all { font-size: .73rem; color: var(--primary); cursor: pointer; font-weight: 600; }
     .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
-    .loading {
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px; color: var(--text-muted); font-size: .875rem;
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: .875rem; }
+    .tag-pill {
+      display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: .68rem; font-weight: 700;
     }
-    .spinner {
-      width: 22px; height: 22px;
-      border: 2px solid var(--border); border-top-color: var(--primary);
-      border-radius: 50%; animation: spin .8s linear infinite; margin-right: 12px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .empty-state {
-      text-align: center; padding: 40px 20px;
-      color: var(--text-muted); font-size: .875rem;
+    .tag-pill.cartao { background: #f5f3ff; color: #7c3aed; }
+    .tag-pill.receita { background: var(--success-light); color: var(--success); }
+    .code-block {
+      background: #1e293b; color: #e2e8f0; border-radius: 8px;
+      padding: 16px; font-family: monospace; font-size: .78rem;
+      line-height: 1.6; overflow-x: auto; margin: 10px 0;
     }
 
     /* ── MOBILE TOP BAR ── */
@@ -326,14 +280,10 @@
       display: none; position: fixed; top: 0; left: 0; right: 0; height: 60px;
       background: linear-gradient(135deg, #1e3a8a, #1a56db);
       z-index: 100; align-items: center; justify-content: space-between;
-      padding: 0 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+      padding: 0 18px; box-shadow: 0 2px 8px rgba(0,0,0,.18);
     }
     .mobile-topbar h1 { color: #fff; font-size: 1rem; font-weight: 700; }
-    .mobile-topbar .tag {
-      background: rgba(255,255,255,.18); color: #fff;
-      font-size: .7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;
-    }
+    .mobile-topbar .tag { background: rgba(255,255,255,.18); color: #fff; font-size: .7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
 
     /* ── BOTTOM NAV ── */
     .bottom-nav {
@@ -344,196 +294,62 @@
     }
     .bnav-item {
       display: flex; flex-direction: column; align-items: center; gap: 3px;
-      padding: 7px 12px; cursor: pointer; color: var(--text-muted);
+      padding: 7px 10px; cursor: pointer; color: var(--text-muted);
       border: none; background: none; transition: color .15s;
     }
     .bnav-item.active { color: var(--primary); }
     .bnav-item svg { width: 22px; height: 22px; }
-    .bnav-item span { font-size: .62rem; font-weight: 700; }
+    .bnav-item span { font-size: .6rem; font-weight: 700; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .kpi-grid { grid-template-columns: repeat(2,1fr); }
+      .source-grid { grid-template-columns: repeat(2,1fr); }
     }
     @media (max-width: 768px) {
       .sidebar { display: none; }
       .mobile-topbar { display: flex; }
       .bottom-nav { display: flex; }
-      .main {
-        margin-left: 0;
-        padding: 16px;
-        padding-top: calc(60px + 16px);
-        padding-bottom: calc(62px + 16px);
-      }
+      .main { margin-left: 0; padding: 16px; padding-top: calc(60px + 16px); padding-bottom: calc(62px + 16px); }
       .charts-row { grid-template-columns: 1fr; }
-      .setup-steps { grid-template-columns: 1fr; }
       .grid-2 { grid-template-columns: 1fr; }
       .kpi-value { font-size: 1.25rem; }
     }
-    @media (max-width: 420px) {
+    @media (max-width: 500px) {
+      .kpi-grid { grid-template-columns: repeat(2,1fr); }
+      .source-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 360px) {
       .kpi-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- ═══ SIDEBAR ═══ -->
-  <nav class="sidebar">
-    <div class="sidebar-brand">
-      <h1>💰 Painel Financeiro</h1>
-      <p id="sb-account">Conta Itaú</p>
-    </div>
-    <div class="sidebar-nav">
-      <button class="nav-item active" onclick="showPage('overview')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1"/>
-          <rect x="14" y="3" width="7" height="7" rx="1"/>
-          <rect x="3" y="14" width="7" height="7" rx="1"/>
-          <rect x="14" y="14" width="7" height="7" rx="1"/>
-        </svg>
-        Visão Geral
-      </button>
-      <button class="nav-item" onclick="showPage('extrato')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
-          <rect x="9" y="3" width="6" height="4" rx="1"/>
-          <line x1="9" y1="12" x2="15" y2="12"/>
-          <line x1="9" y1="16" x2="13" y2="16"/>
-        </svg>
-        Extrato
-      </button>
-      <button class="nav-item" onclick="showPage('orcamento')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M12 6v6l4 2"/>
-        </svg>
-        Orçamento
-      </button>
-      <button class="nav-item" onclick="showPage('mensal')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-        </svg>
-        Mensal
-      </button>
-      <button class="nav-item" onclick="showPage('config')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-        </svg>
-        Configurar
-      </button>
-    </div>
-    <div class="sidebar-footer">
-      <div class="sync-info" id="last-sync">Modo demonstração</div>
-      <button class="sync-btn" onclick="refreshData()">🔄 Atualizar dados</button>
-    </div>
-  </nav>
-
-  <!-- ═══ MOBILE TOP BAR ═══ -->
-  <div class="mobile-topbar">
-    <h1>💰 Painel Financeiro</h1>
-    <div class="tag" id="mob-tag">DEMO</div>
-  </div>
-
-  <!-- ═══ MAIN ═══ -->
-  <main class="main">
-
-    <!-- ── PAGE: VISÃO GERAL ── -->
-    <div class="page active" id="page-overview">
-      <div class="page-header">
-        <h2>Visão Geral</h2>
-        <p id="overview-sub">Maio 2026</p>
+<!-- ═══ LOCK SCREEN ═══ -->
+<div id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-icon">🔐</div>
+    <h2>Painel Financeiro</h2>
+    <p id="lock-sub">Digite sua senha para acessar</p>
+    <input type="password" class="lock-input" id="lock-pw"
+           placeholder="••••••••" ���W�F�v��&�b�WfV�B�W����tV�FW"r�F���v�ₒ �WF�6���WFS�&7W'&V�B�77v�&B#��'WGF��6�73�&��6��'F�"��6Ɩ6��&F���v�ₒ#�V�G&#��'WGF����F�b6�73�&��6��W'""�C�&��6��W'"#���F�c��F�b6�73�&��6�ֆ��B"�C�&��6�ֆ��B"7G��S�&F�7������R#�&��V�&�6W76�6V�F�v�FF6W,:FVf��F6���7V6V�W&��V�FR���F�c��7�6�73�&��6��6��vR�r"�C�&��6��6��vR���"7G��S�&F�7������R"��6Ɩ6��&6��vUt��FR��#��FW&"6V���7����F�c���F�cࠣ���)Y)Y)Y)Y)Y)Y����F�b�C�&"7G��S�&F�7������R#��F�b6�73�&#ࠢ���)H)H4�DT$")H)H�����b6�73�'6�FV&"#��F�b6�73�'6�FV&"�'&�B#�ƃ�	�+��V�f���6V�&�������C�'6"�66�V�B#�6��F�F;������F�c��F�b6�73�'6�FV&"��b#��'WGF��6�73�&�b֗FV�7F�fR"��6Ɩ6��'6��uvR�v�fW'f�Wrr�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#��&V7B��#2"��#2"v�GF��#r"�V�v�C�#r"'��#"���&V7B��#B"��#2"v�GF��#r"�V�v�C�#r"'��#"���&V7B��#2"��#B"v�GF��#r"�V�v�C�#r"'��#"���&V7B��#B"��#B"v�GF��#r"�V�v�C�#r"'��#"����7fs�f�<:6�vW&����'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�vW�G&F�r�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#��F�C�$ӒT�v""�"'c&"""&�"""�%cv""�"�&��""���&V7B��#�"��#2"v�GF��#b"�V�v�C�#B"'��#"���Ɩ�R��#�"��#""�#�#R"�#�#""���Ɩ�R��#�"��#b"�#�#2"�#�#b"����7fs�W�G&F���'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�w&V6V�F2r�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#���ǖƖ�R���G3�##2b2�RR�R��R�R�"����ǖƖ�R���G3�#rb#2b#2""����7fs�&V6V�F0���'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�v�&6�V�F�r�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#��6�&6�R7��#""7��#""#�#"���F�C�$�"gcf�B""����7fs��,:v�V�F���'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�v�V�6�r�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#���ǖƖ�R���G3�##""�"R#�2b""""����7fs��V�6����'WGF����'WGF��6�73�&�b֗FV�"��6Ɩ6��'6��uvR�v6��f�rr�#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#��6�&6�R7��#""7��#""#�#2"���F�C�$���BV�cR�cR�32�&��b�f"""�2""�"�2���b��f�cR�cR��"��32�cR�cR��Sc#""�Bb����cR�cR���F�cR�cR��"�36���b�f""�"�2�"�6��b��d�cR�cRB�c�V�cR�cR��S��6""�F����cR�cRB�b��cR�cR��32��&���b��f"""�2�"�6��b�d�cR�cR�B�c��cR�cR��Sc6""Bb���cR�cR�S�cR�cR�"��36��b��f"""�2"�6���b�d�cR�cR��B��cR�cR�S�#""F�����cR�cR��S�"����7fs�6��f�wW& ���'WGF�����F�c��F�b6�73�'6�FV&"�f��FW"#��F�b6�73�'7��2֖�f�"�C�&�7B�7��2#�6V�FF�2���'FF�3��F�c���F�c����cࠢ���)H)H��$��RD�$")H)H����F�b6�73�&��&��R�F�&"#�ƃ�	�+��V�f���6V�&������F�b6�73�'Fr"�C�&��"�Fr#�(	C��F�c���F�cࠢ���)H)H���)H)H�������6�73�&���#ࠢ���)Y)Y)Y)YtS�d�<84�tU$�)Y)Y)Y)Y����F�b6�73�'vR7F�fR"�C�'vR��fW'f�Wr#��F�b6�73�'vRֆVFW"#�ƃ#�f�<:6�vW&����#���C�&�fW'f�Wr�7V"#�(	C�����F�cࠢ�F�b�C�&���FF�&��W""6�73�&�W'B�W'B�v&�"7G��S�&F�7������R#�	�8"�V�V�FF�6'&VvF���F(	Bl:V��#�6��f�wW&#��#�R���'FRV�'V�f��e�F��F;����F�cࠢ�F�b6�73�&���w&�B#��F�b6�73�&���6&B&�VR#��F�b6�73�&����&V�#�6�F�F6��F��F�c��F�b6�73�&���f�VR"�C�&���6�F�#�(	C��F�c��F�b6�73�&���6��vR#�6��F6�'&V�FS��F�c���F�c��F�b6�73�&���6&Bw&VV�#��F�b6�73�&����&V�#�&V6V�F2F��:�3��F�c��F�b6�73�&���f�VR�6�F�fR"�C�&��֖�6��R#�(	C��F�c��F�b6�73�&���6��vR"�C�&��֖�6��R�7V"#�W�6��6'L:6�FR7,:�F�F���F�c���F�c��F�b6�73�&���6&B&VB#��F�b6�73�&����&V�#�FW7W62F��:�3��F�c��F�b6�73�&���f�VR�VvF�fR"�C�&���W�V�6W2#�(	C��F�c��F�b6�73�&���6��vR"�C�&���W��7V"#�W�6��fGW&6'L:6���F�c���F�c��F�b6�73�&���6&BW'�R#��F�b6�73�&����&V�#�6�F�F��:�3��F�c��F�b6�73�&���f�VR"�C�&���&��6R#�(	C��F�c��F�b6�73�&���6��vR"�C�&���&��7V"#�(	C��F�c���F�c���F�cࠢ�F�b6�73�&6�'G2�&�r#��F�b6�73�&6&B#��F�b6�73�'6V7F����F�F�R#�Wf��\:|:6�F�6�F���F�c��F�b6�73�&6�'B�6��F��W"#��6�f2�C�&6�'B�&��6R#���6�f3���F�c���F�c��F�b6�73�&6&B#��F�b6�73�'6V7F����F�F�R#�v7F�2�"6FVv�&���F�c��F�b6�73�&6�'B�6��F��W""7G��S�&�V�v�C�#c�#��6�f2�C�&6�'B�6G2#���6�f3���F�c���F�c���F�cࠢ�F�b6�73�&6&B#��F�b6�73�'6V7F����F�F�R#�9��F��2G&�6:|;VW0��7�6�73�'f�Wr���"��6Ɩ6��'6��uvR�vW�G&F�r�#�fW"F�F2(i#��7����F�c��F�b6�73�'G&�67F����Ɨ7B"�C�'&V6V�B�G�#��F�b6�73�&V�G��7FFR#���'FRV�'V�f��e�&fW"7V2G&�6:|;VW3��F�c���F�c���F�c���F�cࠢ���)Y)Y)Y)YtS�U�E$D�)Y)Y)Y)Y����F�b6�73�'vR"�C�'vR�W�G&F�#��F�b6�73�'vRֆVFW"#�ƃ#�W�G&F����#��䆗7L;7&�6�6���WF�FRG&�6:|;VW3�����F�cࠢ�F�b6�73�&���F��6V�V7F�"#��'WGF��6�73�&���F��'F�"��6Ɩ6��&6��vT���F����#�(���'WGF����F�b6�73�&���F���&V�"�C�&W�B����F�#�(	C��F�c��'WGF��6�73�&���F��'F�"��6Ɩ6��&6��vT���F���#�(���'WGF�����F�cࠢ�F�b6�73�&���w&�B"7G��S�&w&�B�FV��FR�6��V��3�&WVB�B�g"���&v���&�GF�ӣg�#��F�b6�73�&���6&Bw&VV�#��F�b6�73�&����&V�#�V�G&F3��F�c��F�b6�73�&���f�VR�6�F�fR"�C�&W�B֖�6��R#�(	C��F�c��F�b6�73�&���6��vR"7G��S�&f��B�6��S��c�&V�#�W�6��6'L:6���F�c���F�c��F�b6�73�&���6&B&VB#��F�b6�73�&����&V�#�6:�F3��F�c��F�b6�73�&���f�VR�VvF�fR"�C�&W�B�W�#�(	C��F�c��F�b6�73�&���6��vR"7G��S�&f��B�6��S��c�&V�#�W�6��fGW&��F�c���F�c��F�b6�73�&���6&BW'�R#��F�b6�73�&����&V�#�fGW&6'L:6���F�c��F�b6�73�&���f�VR"�C�&W�B�6'F�"7G��S�&6���#�3v36VB#�(	C��F�c��F�b6�73�&���6��vR"7G��S�&f��B�6��S��c�&V�#�v����:�3��F�c���F�c��F�b6�73�&���6&B&�VR#��F�b6�73�&����&V�#�6�F�F��:�3��F�c��F�b6�73�&���f�VR"�C�&W�B�&�#�(	C��F�c���F�c���F�cࠢ�F�b6�73�'6V&6��&"#��7frf�Wt&���##B#B"f����&���R"7G&��S�&7W'&V�D6���""7G&��R�v�GF��#"#��6�&6�R7��#"7��#"#�#�"���F�C�$�##��B�3R�B�3R"����7fs�Ɩ�WBG�S�'FW�B"�C�'G��6V&6�"�6V���FW#�$'W66"�"FW67&�:|:6��R6FVv�&�(
+b"���WC�&f��FW%G���#���F�cࠢ�F�b6�73�&6&B#��F�b6�73�'G&�67F����Ɨ7B"�C�&gV���G�#��F�b6�73�&V�G��7FFR#���'FRV�'V�f��e�&fW"7V2G&�6:|;VW3��F�c���F�c���F�c���F�cࠢ���)Y)Y)Y)YtS�$T4T�D2)Y)Y)Y)Y����F�b6�73�'vR"�C�'vR�&V6V�F2#��F�b6�73�'vRֆVFW"#�ƃ#�&V6V�F3���#���F�67&�֖�:|:6��"f��FRFR&V�F�����F�cࠢ�F�b6�73�&���F��6V�V7F�"#��'WGF��6�73�&���F��'F�"��6Ɩ6��&6��vT���F����#�(���'WGF����F�b6�73�&���F���&V�"�C�'&V2����F�#�(	C��F�c��'WGF��6�73�&���F��'F�"��6Ɩ6��&6��vT���F���#�(���'WGF�����F�cࠢ���6�W&6R��6&G2����F�b�C�'6�W&6Rַ�2"6�73�'6�W&6R�w&�B#���F�cࠢ<!-- Income stacked chart -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-title">Receitas por Fonte — últimos 6 meses</div>
+        <div class="chart-container" style="height:300px"><canvas id="chart-income-sources"></canvas></div>
       </div>
 
-      <div id="demo-banner" class="demo-banner" onclick="showPage('config')">
-        ⚡ Modo demonstração — dados fictícios. Toque aqui para conectar sua conta Itaú real.
-      </div>
-
-      <div class="kpi-grid">
-        <div class="kpi-card blue">
-          <div class="kpi-label">Saldo Atual</div>
-          <div class="kpi-value" id="kpi-saldo">R$ 8.420,35</div>
-          <div class="kpi-change">Conta corrente</div>
-        </div>
-        <div class="kpi-card green">
-          <div class="kpi-label">Receitas do Mês</div>
-          <div class="kpi-value positive" id="kpi-income">—</div>
-          <div class="kpi-change" id="kpi-income-sub">—</div>
-        </div>
-        <div class="kpi-card red">
-          <div class="kpi-label">Despesas do Mês</div>
-          <div class="kpi-value negative" id="kpi-expenses">—</div>
-          <div class="kpi-change" id="kpi-exp-sub">—</div>
-        </div>
-        <div class="kpi-card purple">
-          <div class="kpi-label">Saldo do Mês</div>
-          <div class="kpi-value" id="kpi-balance">—</div>
-          <div class="kpi-change" id="kpi-bal-sub">—</div>
-        </div>
-      </div>
-
-      <div class="charts-row">
-        <div class="card">
-          <div class="section-title">Evolução do Saldo — últimos 30 dias</div>
-          <div class="chart-container"><canvas id="chart-balance"></canvas></div>
-        </div>
-        <div class="card">
-          <div class="section-title">Gastos por Categoria</div>
-          <div class="chart-container" style="height:260px"><canvas id="chart-cats"></canvas></div>
-        </div>
-      </div>
-
+      <!-- Income transactions list -->
       <div class="card">
-        <div class="section-title">
-          Últimas Transações
-          <span class="view-all" onclick="showPage('extrato')">Ver todas →</span>
+        <div class="section-title">Entradas do Mês</div>
+        <div class="transaction-list" id="income-tx">
+          <div class="empty-state">Sem dados de receita para este mês</div>
         </div>
-        <div class="transaction-list" id="recent-tx"></div>
       </div>
     </div>
 
-    <!-- ── PAGE: EXTRATO ── -->
-    <div class="page" id="page-extrato">
-      <div class="page-header">
-        <h2>Extrato</h2>
-        <p>Histórico completo de transações</p>
-      </div>
-
-      <div class="month-selector">
-        <button class="month-btn" onclick="changeMonth(-1)">‹</button>
-        <div class="month-label" id="ext-month">Maio 2026</div>
-        <button class="month-btn" onclick="changeMonth(1)">›</button>
-      </div>
-
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
-        <div class="kpi-card green">
-          <div class="kpi-label">Entradas</div>
-          <div class="kpi-value positive" id="ext-income">—</div>
-        </div>
-        <div class="kpi-card red">
-          <div class="kpi-label">Saídas</div>
-          <div class="kpi-value negative" id="ext-exp">—</div>
-        </div>
-        <div class="kpi-card blue">
-          <div class="kpi-label">Saldo do Mês</div>
-          <div class="kpi-value" id="ext-bal">—</div>
-        </div>
-      </div>
-
-      <div class="search-bar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-        </svg>
-        <input type="text" id="tx-search" placeholder="Buscar por descrição ou categoria…" oninput="filterTx()">
-      </div>
-
-      <div class="card">
-        <div class="transaction-list" id="full-tx"></div>
-      </div>
-    </div>
-
-    <!-- ── PAGE: ORÇAMENTO ── -->
+    <!-- ════ PAGE: ORÇAMENTO ════ -->
     <div class="page" id="page-orcamento">
       <div class="page-header">
         <h2>Orçamento</h2>
@@ -542,14 +358,14 @@
 
       <div class="month-selector">
         <button class="month-btn" onclick="changeMonth(-1)">‹</button>
-        <div class="month-label" id="orc-month">Maio 2026</div>
+        <div class="month-label" id="orc-month">—</div>
         <button class="month-btn" onclick="changeMonth(1)">›</button>
       </div>
 
       <div class="grid-2" style="align-items:start">
         <div class="card">
           <div class="section-title">Progresso por Categoria</div>
-          <div id="budget-bars"><div class="loading"><div class="spinner"></div></div></div>
+          <div id="budget-bars"><div class="empty-state">Sem despesas</div></div>
         </div>
         <div class="card">
           <div class="section-title">Definir Limites Mensais</div>
@@ -561,11 +377,11 @@
       </div>
     </div>
 
-    <!-- ── PAGE: MENSAL ── -->
+    <!-- ════ PAGE: MENSAL ════ -->
     <div class="page" id="page-mensal">
       <div class="page-header">
         <h2>Análise Mensal</h2>
-        <p>Balanço mês a mês — o que entrou e o que saiu</p>
+        <p>Balanço mês a mês por fonte de renda e despesas</p>
       </div>
 
       <div class="card" style="margin-bottom:16px">
@@ -574,396 +390,648 @@
       </div>
 
       <div class="card">
-        <div class="section-title">Resumo Mensal</div>
+        <div class="section-title">Detalhe por Mês</div>
         <div style="overflow-x:auto">
-          <table class="summary-table">
-            <thead>
-              <tr>
-                <th>Mês</th>
-                <th>Receitas</th>
-                <th>Despesas</th>
-                <th>Saldo</th>
-                <th>vs. Mês Ant.</th>
-              </tr>
-            </thead>
+          <table class="summary-table" id="monthly-table">
+            <thead><tr id="monthly-thead"></tr></thead>
             <tbody id="monthly-rows"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ── PAGE: CONFIGURAR ── -->
+    <!-- ════ PAGE: CONFIGURAR ════ -->
     <div class="page" id="page-config">
       <div class="page-header">
         <h2>Configurar</h2>
-        <p>Conecte sua conta bancária com segurança via Open Finance</p>
+        <p>Importação de dados e preferências</p>
       </div>
 
-      <!-- Status -->
+      <!-- Import OFX -->
       <div class="card" style="margin-bottom:16px">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-          <div>
-            <div style="font-size:.95rem;font-weight:700;margin-bottom:3px">Conexão com o Banco</div>
-            <p style="font-size:.82rem;color:var(--text-muted)">Itaú via Open Finance Brasil (somente leitura)</p>
+        <div class="section-title" style="margin-bottom:10px">📂 Importar Extrato OFX do Itaú</div>
+        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:14px;line-height:1.55">
+          No app ou site do Itaú: <b>Extrato → Exportar → OFX</b>. Importe mensalmente.
+          Os dados são salvos automaticamente no navegador e persistem entre sessões.
+        </p>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <label style="cursor:pointer">
+            <input type="file" id="ofx-file" accept=".ofx,.OFX,.txt" style="display:none" onchange="importOFX(event)">
+            <span class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px">
+              📁 Selecionar arquivo OFX…
+            </span>
+          </label>
+          <span id="ofx-status" style="font-size:.82rem;color:var(--text-muted)"></span>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="clearAllData()" style="color:var(--danger);border-color:var(--danger)">
+            🗑️ Apagar todos os dados
+          </button>
+          <span id="data-summary" style="font-size:.8rem;color:var(--text-muted);align-self:center"></span>
+        </div>
+      </div>
+
+      <!-- Password change -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-title" style="margin-bottom:10px">🔑 Alterar Senha</div>
+        <div class="grid-2">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Nova Senha</label>
+            <input type="password" class="form-input" id="cfg-pw1" placeholder="Nova senha">
           </div>
-          <span class="status-badge disconnected" id="conn-badge">
-            <span class="status-dot"></span> Não conectado
-          </span>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Confirmar</label>
+            <input type="password" class="form-input" id="cfg-pw2" placeholder="Repita a senha">
+          </div>
         </div>
-        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="connectBank()" id="btn-connect">🏦 Conectar Itaú</button>
-          <button class="btn btn-outline" onclick="connectSandbox()" id="btn-sandbox" style="background:#f0fdf4;border-color:#10b981;color:#065f46">🧪 Testar Sandbox</button>
-          <button class="btn btn-outline" onclick="refreshData()">🔄 Sincronizar</button>
-          <button class="btn btn-outline" onclick="disconnectBank()" id="btn-disconnect" style="display:none;color:var(--danger)">Desconectar</button>
-        </div>
+        <button class="btn btn-outline btn-sm" onclick="changePassword()" style="margin-top:12px">
+          💾 Alterar Senha
+        </button>
+        <div id="pw-change-msg" style="font-size:.8rem;margin-top:8px"></div>
       </div>
 
-      <!-- Credenciais Pluggy -->
-      <div class="cred-form">
-        <h4>🔑 Credenciais Pluggy (intermediário Open Finance)</h4>
-        <p>
-          O <a href="https://pluggy.ai" target="_blank">Pluggy</a> é um agregador homologado pelo Banco Central que conecta ao Open Finance do Itaú
-          com segurança total — sem compartilhar sua senha bancária. Crie uma conta grátis, copie suas chaves e cole abaixo.
-          <br>As chaves ficam salvas <b>somente no seu navegador</b> (localStorage) e nunca trafegam para servidores de terceiros.
+      <!-- Google Sheets integration -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-title" style="margin-bottom:10px">📊 Sincronização com Google Sheets <span style="font-size:.7rem;color:var(--text-muted);font-weight:400">(opcional)</span></div>
+        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:12px;line-height:1.6">
+          Para manter um backup dos seus dados no Google Sheets, crie um Apps Script seguindo os passos abaixo e cole a URL aqui.
         </p>
-        <div class="form-group">
-          <label class="form-label">Client ID</label>
-          <input type="text" class="form-input" id="cfg-id" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Client Secret</label>
-          <input type="password" class="form-input" id="cfg-secret" placeholder="••••••••••••••••">
-        </div>
-        <button class="btn btn-primary" onclick="saveCredentials()">💾 Salvar Credenciais</button>
-      </div>
 
-      <!-- Importar CSV -->
-      <div class="card" style="margin-bottom:16px;border:2px dashed #e2e8f0">
-        <div style="font-size:.95rem;font-weight:700;margin-bottom:6px">📂 Importar Extrato do Itaú (CSV / OFX)</div>
-        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:12px">
-          No app ou site do Itaú: <b>Extrato → Exportar → CSV</b>. Depois selecione o arquivo abaixo.
-          Seus dados ficam 100% no navegador, nada é enviado para nenhum servidor.
-        </p>
-        <label style="display:inline-block;cursor:pointer">
-          <input type="file" id="csv-file" accept=".csv,.ofx,.txt" style="display:none" onchange="importCSV(event)">
-          <span class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px">
-            📁 Selecionar arquivo...
-          </span>
-        </label>
-        <span id="csv-status" style="font-size:.82rem;margin-left:10px;color:var(--text-muted)"></span>
+        <details style="margin-bottom:14px">
+          <summary style="cursor:pointer;font-size:.82rem;font-weight:600;color:var(--primary)">
+            Ver instruções de configuração do Apps Script ▸
+          </summary>
+          <div style="margin-top:12px;font-size:.8rem;line-height:1.7;color:var(--text)">
+            <ol style="padding-left:18px">
+              <li>Abra o Google Sheets e crie uma planilha nova chamada <b>Finanças</b>.</li>
+              <li>Clique em <b>Extensões → Apps Script</b>.</li>
+              <li>Apague o código existente e cole o código abaixo.</li>
+              <li>Clique em <b>Implantar → Nova implantação</b>, tipo <b>App da Web</b>, acesso: <b>Qualquer pessoa</b>.</li>
+              <li>Copie a URL gerada e cole no campo abaixo.</li>
+            </ol>
+            <div class="code-block">
+function doGet(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet()
+    .getSheetByName('Transações') ||
+    SpreadsheetApp.getActiveSpreadsheet().insertSheet('Transações');
+  const data = sheet.getDataRange().getValues();
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet()
+    .getSheetByName('Transações') ||
+    SpreadsheetApp.getActiveSpreadsheet().insertSheet('Transações');
+  const payload = JSON.parse(e.postData.contents);
+  if (payload.action === 'save') {
+    sheet.clearContents();
+    const header = ['ID','Descrição','Valor','Data','Categoria','Tipo','Fonte'];
+    sheet.appendRow(header);
+    payload.txs.forEach(tx => {
+      sheet.appendRow([tx.id, tx.description, tx.amount,
+        tx.date, tx.category, tx.type, tx.incomeSource||'']);
+    });
+    return ContentService
+      .createTextOutput(JSON.stringify({ok:true}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</div>
+          </div>
+        </details>
+
+        <div class="form-group">
+          <label class="form-label">URL do Apps Script (Web App)</label>
+          <input type="url" class="form-input" id="cfg-sheets-url"
+                 placeholder="https://script.google.com/macros/s/XXXXXX/exec">
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="saveSheetsUrl()">💾 Salvar URL</button>
+          <button class="btn btn-outline btn-sm" onclick="syncToSheets()">☁️ Sincronizar agora</button>
+          <span id="sheets-status" style="font-size:.8rem;color:var(--text-muted);align-self:center"></span>
+        </div>
       </div>
 
       <div class="alert alert-info">
-        🔒 <span>Esta conexão é <b>100% somente leitura</b>. Nenhuma operação financeira pode ser realizada. Você pode revogar o acesso a qualquer momento no app Itaú → <b>Open Finance → Autorizações</b>.</span>
-      </div>
-
-      <div class="setup-steps">
-        <div class="setup-step">
-          <div class="step-num">1</div>
-          <h4>Crie sua conta Pluggy</h4>
-          <p>Acesse <a href="https://pluggy.ai" target="_blank">pluggy.ai</a>, clique em <b>Sign Up</b> (gratuito) e vá em <b>Dashboard → API Keys</b> para copiar suas chaves.</p>
-        </div>
-        <div class="setup-step">
-          <div class="step-num">2</div>
-          <h4>Cole as chaves acima</h4>
-          <p>Insira o <b>Client ID</b> e o <b>Client Secret</b> nos campos acima e clique em <b>Salvar Credenciais</b>.</p>
-        </div>
-        <div class="setup-step">
-          <div class="step-num">3</div>
-          <h4>Autorize no Itaú</h4>
-          <p>Clique em <b>Conectar Itaú</b>. O app do Itaú abrirá pedindo sua autorização via Open Finance. Aprovando, os dados carregam automaticamente.</p>
-        </div>
+        💡 <span>Seus dados são salvos automaticamente no <b>localStorage</b> do navegador a cada importação. Não é necessário configurar o Google Sheets para usar o painel — ele é apenas um backup opcional em nuvem.</span>
       </div>
     </div>
 
   </main>
 
-  <!-- ═══ BOTTOM NAV ═══ -->
+  <!-- ── BOTTOM NAV ── -->
   <nav class="bottom-nav">
     <button class="bnav-item active" onclick="showPage('overview')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
         <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-      </svg>
-      <span>Geral</span>
+      </svg><span>Geral</span>
     </button>
     <button class="bnav-item" onclick="showPage('extrato')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
         <rect x="9" y="3" width="6" height="4" rx="1"/>
-      </svg>
-      <span>Extrato</span>
+      </svg><span>Extrato</span>
     </button>
-    <button class="bnav-item" onclick="showPage('orcamento')">
+    <button class="bnav-item" onclick="showPage('receitas')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-      </svg>
-      <span>Orçamento</span>
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+        <polyline points="17 6 23 6 23 12"/>
+      </svg><span>Receitas</span>
     </button>
     <button class="bnav-item" onclick="showPage('mensal')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-      </svg>
-      <span>Mensal</span>
+      </svg><span>Mensal</span>
     </button>
     <button class="bnav-item" onclick="showPage('config')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="3"/>
         <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-      </svg>
-      <span>Config</span>
+      </svg><span>Config</span>
     </button>
   </nav>
 
-</div>
-
-<!-- Pluggy Connect SDK (carrega apenas se disponível) -->
-<script src="https://cdn.pluggy.ai/pluggy-connect/v2.1.0/pluggy-connect.js"
-        onerror="window._pluggyMissing=true"></script>
+</div><!-- .app -->
+</div><!-- #app -->
 
 <script>
-// ════════════════════════════════════════════════════
-//  ESTADO GLOBAL
-// ════════════════════════════════════════════════════
-const S = {
-  page: 'overview',
-  month: new Date().getMonth(),
-  year:  new Date().getFullYear(),
-  isDemo: true,
-  clientId:     localStorage.getItem('pfy_id') || '',
-  clientSecret: localStorage.getItem('pfy_secret') || '',
-  itemId:       localStorage.getItem('pfy_item') || '',
-  balance: 8420.35,
-  txs: [],
-  budgets: JSON.parse(localStorage.getItem('budgets') || '{}'),
-  charts: {}
-};
-
-// ════════════════════════════════════════════════════
-//  CATEGORIAS
-// ════════════════════════════════════════════════════
-const CATS = {
-  'Alimentação':    { icon:'🍔', color:'#f97316', bg:'#fff7ed' },
-  'Transporte':     { icon:'🚗', color:'#0ea5e9', bg:'#f0f9ff' },
-  'Moradia':        { icon:'🏠', color:'#8b5cf6', bg:'#f5f3ff' },
-  'Saúde':          { icon:'💊', color:'#10b981', bg:'#ecfdf5' },
-  'Entretenimento': { icon:'🎬', color:'#ec4899', bg:'#fdf2f8' },
-  'Educação':       { icon:'📚', color:'#6366f1', bg:'#eef2ff' },
-  'Compras':        { icon:'🛍️', color:'#f59e0b', bg:'#fffbeb' },
-  'Receita':        { icon:'💰', color:'#059669', bg:'#ecfdf5' },
-  'Transferência':  { icon:'↔️', color:'#64748b', bg:'#f8fafc' },
-  'Financeiro':     { icon:'🏦', color:'#1a56db', bg:'#eff6ff' },
-  'Outros':         { icon:'📌', color:'#94a3b8', bg:'#f8fafc' }
-};
-
-const EXPENSE_CATS = ['Alimentação','Transporte','Moradia','Saúde',
-                      'Entretenimento','Educação','Compras','Financeiro','Outros'];
-
-const DEFAULT_BUDGETS = {
-  'Alimentação':800, 'Transporte':400, 'Moradia':600,
-  'Saúde':300, 'Entretenimento':200, 'Compras':500, 'Outros':200
-};
-
+// ═══════════════════════════════════════════════════════
+//  CONSTANTES
+// ═══════════════════════════════════════════════════════
 const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
                 'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
-function pluggyToLocal(c) {
-  return {
-    'Food and Beverage':'Alimentação','Transportation':'Transporte',
-    'Housing and Rent':'Moradia','Health and Beauty':'Saúde',
-    'Entertainment':'Entretenimento','Education':'Educação',
-    'Shopping':'Compras','Income':'Receita','Transfer':'Transferência',
-    'Financial':'Financeiro'
-  }[c] || 'Outros';
+const CATS = {
+  'Receita':           { icon:'💰', color:'#059669', bg:'#ecfdf5' },
+  'Rendimentos':       { icon:'📈', color:'#0891b2', bg:'#ecfeff' },
+  'Cartão de Crédito': { icon:'💳', color:'#7c3aed', bg:'#f5f3ff' },
+  'Alimentação':       { icon:'🍔', color:'#f97316', bg:'#fff7ed' },
+  'Transporte':        { icon:'🚗', color:'#0ea5e9', bg:'#f0f9ff' },
+  'Moradia':           { icon:'🏠', color:'#8b5cf6', bg:'#f5f3ff' },
+  'Saúde':             { icon:'💊', color:'#10b981', bg:'#ecfdf5' },
+  'Entretenimento':    { icon:'🎬', color:'#ec4899', bg:'#fdf2f8' },
+  'Educação':          { icon:'📚', color:'#6366f1', bg:'#eef2ff' },
+  'Compras':           { icon:'🛍️', color:'#f59e0b', bg:'#fffbeb' },
+  'Financeiro':        { icon:'🏦', color:'#1a56db', bg:'#eff6ff' },
+  'Transferência':     { icon:'↔️',  color:'#64748b', bg:'#f8fafc' },
+  'Outros':            { icon:'📌', color:'#94a3b8', bg:'#f8fafc' }
+};
+
+// Categorias de despesa (excluídas receitas e cartão)
+const EXPENSE_CATS = ['Alimentação','Transporte','Moradia','Saúde',
+                      'Entretenimento','Educação','Compras','Financeiro','Outros','Transferência'];
+
+const DEFAULT_BUDGETS = {
+  'Alimentação':1200, 'Transporte':500, 'Moradia':2000,
+  'Saúde':500, 'Entretenimento':300, 'Compras':600, 'Financeiro':500, 'Outros':300
+};
+
+// Fontes de renda e suas cores
+const INCOME_SOURCES = {
+  'Dr. Atende':          '#1a56db',
+  'Unimed':              '#059669',
+  'Herrero':             '#7c3aed',
+  'Rallo Almeida':       '#f97316',
+  'Poupança/Rendimentos':'#0891b2',
+  'Outros':              '#94a3b8'
+};
+
+// ═══════════════════════════════════════════════════════
+//  ESTADO GLOBAL
+// ═══════════════════════════════════════════════════════
+const S = {
+  page:    'overview',
+  month:   new Date().getMonth(),
+  year:    new Date().getFullYear(),
+  balance: 0,
+  txs:     [],
+  budgets: JSON.parse(localStorage.getItem('pf_budgets') || '{}'),
+  charts:  {}
+};
+
+// ═══════════════════════════════════════════════════════
+//  AUTENTICAÇÃO
+// ═══════════════════════════════════════════════════════
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-// ════════════════════════════════════════════════════
-//  GERADOR DE DADOS DEMO
-// ════════════════════════════════════════════════════
-function makeDemo() {
-  const txs = [];
-  const now = new Date();
+async function doLogin() {
+  const pw  = document.getElementById('lock-pw').value;
+  const err = document.getElementById('lock-err');
+  if (!pw) { err.textContent = 'Digite sua senha.'; return; }
 
-  const names = {
-    'Alimentação':    ['iFood Pedido','Mercado Pão de Açúcar','Rappi Food','McDonald\'s','Supermercado Extra','Padaria Central','Restaurante Sabor'],
-    'Transporte':     ['Uber','99 Táxi','Shell Gasolina','Posto Ipiranga','Metrô SP','Parking Shopping'],
-    'Moradia':        ['Enel Energia','Sabesp Água','Condomínio','Claro Internet','Vivo Fibra'],
-    'Saúde':          ['Droga Raia','Drogasil','Smart Fit Academia','Consulta Médica'],
-    'Entretenimento': ['Netflix','Spotify','Amazon Prime','Cinema Kinoplex','Steam','Disney+'],
-    'Compras':        ['Amazon','Shopee','Americanas','Magazine Luiza','Zara'],
-    'Financeiro':     ['IOF Cartão','Tarifa Manutenção','Seguro Itaú']
-  };
+  const hash   = await sha256(pw);
+  const stored = localStorage.getItem('pf_hash');
 
-  const spend = {
-    'Alimentação':    () => 20  + Math.random()*200,
-    'Transporte':     () => 10  + Math.random()*150,
-    'Moradia':        () => 80  + Math.random()*300,
-    'Saúde':          () => 30  + Math.random()*200,
-    'Entretenimento': () => 15  + Math.random()*60,
-    'Compras':        () => 50  + Math.random()*500,
-    'Financeiro':     () => 10  + Math.random()*50
-  };
-
-  for (let mo = 0; mo < 3; mo++) {
-    let m = now.getMonth() - mo;
-    let y = now.getFullYear();
-    if (m < 0) { m += 12; y--; }
-    const days = new Date(y, m+1, 0).getDate();
-    const maxDay = (mo === 0) ? now.getDate() : days;
-
-    // Salário
-    if (5 <= maxDay) txs.push({ id:`sal-${mo}`, description:'PIX — Salário Empresa', amount:6500, date:fmt(y,m,5), category:'Receita', type:'CREDIT' });
-    // Eventual freelance
-    if (15 <= maxDay && Math.random() > 0.45) txs.push({ id:`frl-${mo}`, description:'TED — Pagamento Freelance', amount:round(800+Math.random()*1200), date:fmt(y,m,15), category:'Receita', type:'CREDIT' });
-
-    const n = mo===0 ? Math.max(5, Math.floor(20*(maxDay/days))) : 22;
-    const cats = Object.keys(names);
-    for (let i=0; i<n; i++) {
-      const cat = cats[Math.floor(Math.random()*cats.length)];
-      txs.push({
-        id:`tx-${mo}-${i}`,
-        description: names[cat][Math.floor(Math.random()*names[cat].length)],
-        amount: -round(spend[cat]()),
-        date: fmt(y, m, Math.floor(Math.random()*maxDay)+1),
-        category: cat,
-        type:'DEBIT'
-      });
-    }
+  if (!stored) {
+    // Primeiro acesso — define a senha
+    localStorage.setItem('pf_hash', hash);
+    unlock();
+  } else if (hash === stored) {
+    unlock();
+  } else {
+    err.textContent = 'Senha incorreta. Tente novamente.';
+    document.getElementById('lock-pw').value = '';
+    document.getElementById('lock-pw').focus();
   }
-  return txs.sort((a,b)=>new Date(b.date)-new Date(a.date));
 }
-function fmt(y,m,d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
-function round(v) { return Math.round(v*100)/100; }
 
-// ════════════════════════════════════════════════════
+function unlock() {
+  document.getElementById('lock-screen').style.display = 'none';
+  document.getElementById('app').style.display = '';
+  document.getElementById('lock-change-lnk').style.display = '';
+  init();
+}
+
+function changePwMode() {
+  // Scroll to config page password section
+  showPage('config');
+  setTimeout(() => document.getElementById('cfg-pw1').focus(), 200);
+}
+
+async function changePassword() {
+  const pw1 = document.getElementById('cfg-pw1').value;
+  const pw2 = document.getElementById('cfg-pw2').value;
+  const msg = document.getElementById('pw-change-msg');
+  if (!pw1 || pw1.length < 4) { msg.style.color = 'var(--danger)'; msg.textContent = '❌ Senha muito curta (mínimo 4 caracteres).'; return; }
+  if (pw1 !== pw2)            { msg.style.color = 'var(--danger)'; msg.textContent = '❌ As senhas não conferem.'; return; }
+  const hash = await sha256(pw1);
+  localStorage.setItem('pf_hash', hash);
+  msg.style.color = 'var(--success)';
+  msg.textContent = '✅ Senha alterada com sucesso!';
+  document.getElementById('cfg-pw1').value = '';
+  document.getElementById('cfg-pw2').value = '';
+}
+
+// ═══════════════════════════════════════════════════════
+//  PERSISTÊNCIA
+// ═══════════════════════════════════════════════════════
+function saveTxs() {
+  try {
+    localStorage.setItem('pf_txs',     JSON.stringify(S.txs));
+    localStorage.setItem('pf_balance', String(S.balance));
+    localStorage.setItem('pf_synced',  new Date().toISOString());
+  } catch(e) { console.warn('localStorage cheio:', e); }
+}
+
+function loadTxs() {
+  const raw = localStorage.getItem('pf_txs');
+  if (!raw) return false;
+  try {
+    S.txs     = JSON.parse(raw);
+    S.balance = parseFloat(localStorage.getItem('pf_balance') || '0');
+    return S.txs.length > 0;
+  } catch(e) { return false; }
+}
+
+function clearAllData() {
+  if (!confirm('Apagar TODOS os dados importados? Esta ação não pode ser desfeita.')) return;
+  localStorage.removeItem('pf_txs');
+  localStorage.removeItem('pf_balance');
+  localStorage.removeItem('pf_synced');
+  S.txs = []; S.balance = 0;
+  renderAll();
+  updateDataSummary();
+  document.getElementById('ofx-status').textContent = '';
+  alert('✅ Dados apagados.');
+}
+
+function updateDataSummary() {
+  const el = document.getElementById('data-summary');
+  if (!el) return;
+  if (!S.txs.length) { el.textContent = 'Nenhum dado carregado.'; return; }
+  const dates = S.txs.map(t => t.date).sort();
+  el.textContent = `${S.txs.length} transações · ${dates[0]} a ${dates[dates.length-1]}`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  GOOGLE SHEETS
+// ═══════════════════════════════════════════════════════
+function saveSheetsUrl() {
+  const url = document.getElementById('cfg-sheets-url').value.trim();
+  if (url) localStorage.setItem('pf_sheets_url', url);
+  document.getElementById('sheets-status').textContent = '✅ URL salva.';
+}
+
+async function syncToSheets() {
+  const url = localStorage.getItem('pf_sheets_url');
+  if (!url) { document.getElementById('sheets-status').textContent = '⚠️ Configure a URL do Apps Script primeiro.'; return; }
+  const st = document.getElementById('sheets-status');
+  st.textContent = '⏳ Sincronizando…';
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'save', txs: S.txs }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const data = await res.json();
+    if (data.ok) st.textContent = `✅ ${S.txs.length} transações sincronizadas!`;
+    else st.textContent = '❌ Erro: ' + JSON.stringify(data);
+  } catch(e) {
+    st.textContent = '❌ Falha na sincronização: ' + e.message;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  PARSER OFX (split-based — robusto)
+// ═══════════════════════════════════════════════════════
+function parseOFX(text) {
+  const txs = [];
+  let balance = null;
+
+  // Extrai saldo (LEDGERBAL)
+  const balM = text.match(/<LEDGERBAL>[\s\S]*?<BALAMT>\s*([0-9.,\-]+)/i);
+  if (balM) balance = parseFloat(balM[1].replace(',', '.'));
+
+  // Função para extrair tag de um bloco de linhas
+  function getTag(block, tag) {
+    const lines = block.split(/\r?\n/);
+    for (const line of lines) {
+      const m = line.match(new RegExp('<' + tag + '>\\s*(.+)\\s*$', 'i'));
+      if (m) return m[1].trim();
+    }
+    // fallback: sem quebra de linha
+    const m2 = block.match(new RegExp('<' + tag + '>([^<\r\n]+)', 'i'));
+    return m2 ? m2[1].trim() : '';
+  }
+
+  // Divide em blocos de transação
+  const parts = text.split(/<STMTTRN>/i);
+  parts.slice(1).forEach((part, idx) => {
+    const end  = part.search(/<\/STMTTRN>/i);
+    const block = end >= 0 ? part.substring(0, end) : part;
+
+    const dtRaw = getTag(block, 'DTPOSTED') || getTag(block, 'DTUSER');
+    if (!dtRaw) return;
+    const y = dtRaw.substring(0,4), mo = dtRaw.substring(4,6), d = dtRaw.substring(6,8);
+    const date = `${y}-${mo}-${d}`;
+
+    const amtStr = getTag(block, 'TRNAMT');
+    const amount = parseFloat(amtStr.replace(',', '.'));
+    if (isNaN(amount)) return;
+
+    const description = getTag(block, 'MEMO') || getTag(block, 'NAME') || 'Sem descrição';
+    const fitid = getTag(block, 'FITID') || `ofx-${idx}`;
+
+    const cat = guessCategory(description, amount);
+    const src = (amount > 0 && cat !== 'Cartão de Crédito') ? guessIncomeSource(description) : null;
+
+    txs.push({ id: fitid, description, amount, date, category: cat, type: amount < 0 ? 'DEBIT' : 'CREDIT', incomeSource: src });
+  });
+
+  return { txs, balance };
+}
+
+// ═══════════════════════════════════════════════════════
+//  CATEGORIZAÇÃO
+// ═══════════════════════════════════════════════════════
+function guessCategory(desc, amount) {
+  const d = desc.toLowerCase();
+
+  // Pagamento de fatura de cartão (tanto saída quanto crédito por restauração de limite)
+  if (/itau mc|pers black|fatura cart|pagamento cart|pag cart/.test(d)) return 'Cartão de Crédito';
+
+  // Despesas fixas identificáveis (verificar antes de checar se é receita positiva)
+  if (/copel|cemig|enel|sabesp|sanepar|claro cel|claro bl|claro fi|vivo|tim |oi |condom|shimizu|aluguel|imoveis|comgas/.test(d)) return 'Moradia';
+  if (/coaplan|contador|receita fed|prefeitura|iptu|inss|pis |cofins|imp fed|darf/.test(d)) return 'Financeiro';
+
+  // Receitas positivas
+  if (amount > 0) {
+    if (/remuner basica poup|juros poup/.test(d)) return 'Rendimentos';
+    return 'Receita';
+  }
+
+  // Despesas (amount < 0)
+  if (/uber|99 taxi|99app|gasolina|posto |pedágio|pedagio|combustiv|shell|ipiranga/.test(d)) return 'Transporte';
+  if (/farmacia|drogasil|drogaria|ultrafarma|panvel|hospital|consulta|médico|medico|plano saude|dental/.test(d)) return 'Saúde';
+  if (/netflix|spotify|amazon prime|hbo|disney|cinema|show |teatro|steam|deezer/.test(d)) return 'Entretenimento';
+  if (/amazon|mercado livre|shopee|magazine|americanas|casas bah|zara|h&m|renner|marisa/.test(d)) return 'Compras';
+  if (/escola|faculdade|curso |udemy|alura|mensalidade col|colégio/.test(d)) return 'Educação';
+  if (/ifood|rappi|mcdon|burger|pizza|restaur|lanche|padaria|açaí|sushi|bar |cafe |starbucks|subway/.test(d)) return 'Alimentação';
+  if (/pag tit|pag boleto|dda |da  |taxa manut|tarifa|iof |seguro/.test(d)) return 'Financeiro';
+  if (/pix transf|ted |doc |transferência/.test(d)) return 'Transferência';
+
+  return 'Outros';
+}
+
+function guessIncomeSource(desc) {
+  const d = desc.toLowerCase();
+  if (/odoutor/.test(d))             return 'Dr. Atende';
+  if (/unimed/.test(d))              return 'Unimed';
+  if (/herrero/.test(d))             return 'Herrero';
+  if (/rallo/.test(d))               return 'Rallo Almeida';
+  if (/remuner basica poup|juros poup/.test(d)) return 'Poupança/Rendimentos';
+  return 'Outros';
+}
+
+// ═══════════════════════════════════════════════════════
+//  IMPORTAR OFX
+// ═══════════════════════════════════════════════════════
+function importOFX(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const st = document.getElementById('ofx-status');
+  st.textContent = '⏳ Lendo arquivo…';
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const text = e.target.result;
+      const { txs, balance } = parseOFX(text);
+
+      if (!txs.length) throw new Error('Nenhuma transação encontrada. Verifique o formato OFX.');
+
+      // Mescla com existentes (evita duplicatas por FITID)
+      const ids = new Set(S.txs.map(t => t.id));
+      const novos = txs.filter(t => !ids.has(t.id));
+      S.txs = [...S.txs, ...novos].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+      // Atualiza saldo se veio no arquivo
+      if (balance !== null) {
+        S.balance = balance;
+        const kpiEl = document.getElementById('kpi-saldo');
+        if (kpiEl) kpiEl.textContent = brl(S.balance);
+      }
+
+      saveTxs();
+      renderAll();
+      updateDataSummary();
+
+      const msg = novos.length < txs.length
+        ? `✅ ${novos.length} novas transações importadas (${txs.length - novos.length} duplicatas ignoradas)`
+        : `✅ ${txs.length} transações importadas!`;
+      st.textContent = msg;
+      document.getElementById('last-sync').textContent = 'Importado: ' + new Date().toLocaleDateString('pt-BR');
+      document.getElementById('mob-tag').textContent = 'OFX';
+
+      showPage('overview');
+    } catch(err) {
+      st.textContent = '❌ Erro: ' + err.message;
+      console.error(err);
+    }
+  };
+  reader.readAsText(file, 'latin1');
+  // Reset file input so same file can be re-imported
+  event.target.value = '';
+}
+
+// ═══════════════════════════════════════════════════════
 //  HELPERS
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function brl(v) {
   return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v);
 }
+
 function monthTxs(m, y) {
   return S.txs.filter(tx => {
-    const d = new Date(tx.date+'T12:00:00');
-    return d.getMonth()===m && d.getFullYear()===y;
+    const d = new Date(tx.date + 'T12:00:00');
+    return d.getMonth() === m && d.getFullYear() === y;
   });
 }
+
+// Retorna summary excluindo cartão de crédito dos totais de receita/despesa
 function monthSummary(m, y) {
-  const txs = monthTxs(m, y);
-  const income   = txs.filter(t=>t.amount>0).reduce((s,t)=>s+t.amount,0);
-  const expenses = txs.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount),0);
-  return { txs, income, expenses, balance: income - expenses };
+  const txs      = monthTxs(m, y);
+  const income   = txs.filter(t => t.amount > 0 && t.category !== 'Cartão de Crédito').reduce((s,t)=>s+t.amount, 0);
+  const expenses = txs.filter(t => t.amount < 0 && t.category !== 'Cartão de Crédito').reduce((s,t)=>s+Math.abs(t.amount), 0);
+  const cartao   = txs.filter(t => t.category === 'Cartão de Crédito' && t.amount < 0).reduce((s,t)=>s+Math.abs(t.amount), 0);
+  return { txs, income, expenses, balance: income - expenses, cartao };
 }
+
+function incomeBySource(txs) {
+  const src = {};
+  txs.filter(t => t.amount > 0 && t.category !== 'Cartão de Crédito').forEach(t => {
+    const s = t.incomeSource || guessIncomeSource(t.description);
+    src[s] = (src[s] || 0) + t.amount;
+  });
+  return src;
+}
+
 function catTotals(txs) {
   const t = {};
-  txs.filter(tx=>tx.amount<0).forEach(tx=>{ t[tx.category]=(t[tx.category]||0)+Math.abs(tx.amount); });
+  txs.filter(tx => tx.amount < 0 && tx.category !== 'Cartão de Crédito')
+     .forEach(tx => { t[tx.category] = (t[tx.category]||0) + Math.abs(tx.amount); });
   return t;
 }
 
-// ════════════════════════════════════════════════════
+function round(v) { return Math.round(v * 100) / 100; }
+
+// ═══════════════════════════════════════════════════════
 //  NAVEGAÇÃO
-// ════════════════════════════════════════════════════
-const PAGES = ['overview','extrato','orcamento','mensal','config'];
+// ═══════════════════════════════════════════════════════
+const PAGES = ['overview','extrato','receitas','orcamento','mensal','config'];
+const BNAV_PAGES = ['overview','extrato','receitas','mensal','config'];
 
 function showPage(p) {
-  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.bnav-item').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(el => el.classList.remove('active'));
 
-  document.getElementById('page-'+p).classList.add('active');
-  const i = PAGES.indexOf(p);
-  document.querySelectorAll('.nav-item')[i]?.classList.add('active');
-  document.querySelectorAll('.bnav-item')[i]?.classList.add('active');
+  document.getElementById('page-' + p).classList.add('active');
+  const si = PAGES.indexOf(p);
+  document.querySelectorAll('.nav-item')[si]?.classList.add('active');
+  const bi = BNAV_PAGES.indexOf(p);
+  document.querySelectorAll('.bnav-item')[bi]?.classList.add('active');
 
   S.page = p;
-  if (p==='overview')  renderOverview();
-  if (p==='extrato')   renderExtrato();
-  if (p==='orcamento') renderOrcamento();
-  if (p==='mensal')    renderMensal();
-  if (p==='config')    renderConfig();
+  if (p === 'overview')  renderOverview();
+  if (p === 'extrato')   renderExtrato();
+  if (p === 'receitas')  renderReceitas();
+  if (p === 'orcamento') renderOrcamento();
+  if (p === 'mensal')    renderMensal();
+  if (p === 'config')    renderConfig();
 }
 
 function changeMonth(d) {
   S.month += d;
-  if (S.month < 0)  { S.month=11; S.year--; }
-  if (S.month > 11) { S.month=0;  S.year++; }
+  if (S.month < 0)  { S.month = 11; S.year--; }
+  if (S.month > 11) { S.month = 0;  S.year++; }
   const label = `${MONTHS[S.month]} ${S.year}`;
-  ['ext-month','orc-month'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=label; });
-  if (S.page==='extrato')   renderExtrato();
-  if (S.page==='orcamento') renderOrcamento();
+  ['ext-month','orc-month','rec-month'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.textContent = label;
+  });
+  if (S.page === 'extrato')   renderExtrato();
+  if (S.page === 'orcamento') renderOrcamento();
+  if (S.page === 'receitas')  renderReceitas();
 }
 
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  RENDER OVERVIEW
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function renderOverview() {
   const now = new Date();
-  const { txs, income, expenses, balance } = monthSummary(now.getMonth(), now.getFullYear());
+  const noData = !S.txs.length;
 
+  document.getElementById('no-data-banner').style.display = noData ? '' : 'none';
   document.getElementById('overview-sub').textContent = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+  document.getElementById('kpi-saldo').textContent = S.balance ? brl(S.balance) : '—';
+
+  if (noData) {
+    ['kpi-income','kpi-expenses','kpi-balance'].forEach(id => document.getElementById(id).textContent = '—');
+    document.getElementById('recent-tx').innerHTML = '<div class="empty-state">Importe um arquivo OFX para ver suas transações</div>';
+    return;
+  }
+
+  const { txs, income, expenses, balance, cartao } = monthSummary(now.getMonth(), now.getFullYear());
   document.getElementById('kpi-income').textContent   = brl(income);
   document.getElementById('kpi-expenses').textContent = brl(expenses);
 
   const balEl = document.getElementById('kpi-balance');
-  balEl.textContent  = brl(balance);
-  balEl.className    = 'kpi-value ' + (balance>=0 ? 'positive' : 'negative');
+  balEl.textContent = brl(balance);
+  balEl.className   = 'kpi-value ' + (balance >= 0 ? 'positive' : 'negative');
 
-  document.getElementById('kpi-income-sub').textContent  = txs.filter(t=>t.amount>0).length + ' entradas';
-  document.getElementById('kpi-exp-sub').textContent     = txs.filter(t=>t.amount<0).length + ' saídas';
-  document.getElementById('kpi-bal-sub').textContent     = expenses>0 ? `Poupou ${Math.round((balance/income)*100)}% da receita` : '—';
+  const pct = income > 0 ? Math.round((balance / income) * 100) : 0;
+  document.getElementById('kpi-income-sub').textContent  = txs.filter(t=>t.amount>0&&t.category!=='Cartão de Crédito').length + ' entradas';
+  document.getElementById('kpi-exp-sub').textContent     = txs.filter(t=>t.amount<0&&t.category!=='Cartão de Crédito').length + ' saídas';
+  document.getElementById('kpi-bal-sub').textContent     = income > 0 ? `Poupou ${pct}% da receita` : '—';
 
   drawBalanceChart();
   drawCatsChart();
 
-  // Recent transactions (last 10)
-  const el = document.getElementById('recent-tx');
-  const top = txs.slice(0,10);
+  const el  = document.getElementById('recent-tx');
+  const top = txs.slice(0, 12);
   el.innerHTML = top.length ? top.map(txHTML).join('') : '<div class="empty-state">Nenhuma transação este mês</div>';
 }
 
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  GRÁFICOS
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+function destroyChart(key) {
+  if (S.charts[key]) { S.charts[key].destroy(); S.charts[key] = null; }
+}
+
 function drawBalanceChart() {
   const ctx = document.getElementById('chart-balance');
-  if (!ctx) return;
+  if (!ctx || !S.txs.length) return;
+  destroyChart('bal');
 
-  const now = new Date();
+  const now    = new Date();
   const labels = [], data = [];
-  const sorted = [...S.txs].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const sorted = [...S.txs].sort((a,b) => new Date(a.date) - new Date(b.date));
+  const totalSum = sorted.reduce((s,t) => s + t.amount, 0);
+  const base     = S.balance - totalSum;
 
-  // Compute running balance for each of last 30 days
-  const totalTxSum = sorted.reduce((s,t)=>s+t.amount,0);
-  const baseOffset = S.balance - totalTxSum; // constant offset so today = S.balance
-
-  for (let i=29; i>=0; i--) {
-    const d = new Date(now); d.setDate(d.getDate()-i);
+  for (let i = 29; i >= 0; i--) {
+    const d  = new Date(now); d.setDate(d.getDate() - i);
     const ds = d.toISOString().split('T')[0];
-    labels.push(i%5===0 ? d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}) : '');
-    const sum = sorted.filter(t=>t.date<=ds).reduce((s,t)=>s+t.amount,0);
-    data.push(round(sum + baseOffset));
-  }
-
-  if (S.charts.bal) {
-    S.charts.bal.data.labels = labels;
-    S.charts.bal.data.datasets[0].data = data;
-    S.charts.bal.update(); return;
+    labels.push(i % 5 === 0 ? d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}) : '');
+    const sum = sorted.filter(t => t.date <= ds).reduce((s,t) => s + t.amount, 0);
+    data.push(round(sum + base));
   }
 
   S.charts.bal = new Chart(ctx, {
-    type:'line',
-    data:{ labels, datasets:[{
-      data, borderColor:'#1a56db', backgroundColor:'rgba(26,86,219,.08)',
-      borderWidth:2.5, fill:true, tension:.35,
-      pointRadius:0, pointHoverRadius:5, pointHoverBackgroundColor:'#1a56db'
-    }]},
-    options:{
+    type: 'line',
+    data: { labels, datasets: [{ data, borderColor:'#1a56db', backgroundColor:'rgba(26,86,219,.08)', borderWidth:2.5, fill:true, tension:.35, pointRadius:0, pointHoverRadius:5, pointHoverBackgroundColor:'#1a56db' }] },
+    options: {
       responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false},
-        tooltip:{ callbacks:{ label:c=>brl(c.raw) }}},
-      scales:{
-        x:{ grid:{display:false}, ticks:{font:{size:11}} },
-        y:{ grid:{color:'#f1f5f9'},
-            ticks:{ font:{size:11}, callback:v=>'R$'+(v/1000).toFixed(1)+'k' }}
+      plugins: { legend:{display:false}, tooltip:{ callbacks:{ label:c => brl(c.raw) }} },
+      scales: {
+        x: { grid:{display:false}, ticks:{font:{size:11}} },
+        y: { grid:{color:'#f1f5f9'}, ticks:{ font:{size:11}, callback: v => 'R$'+(v/1000).toFixed(0)+'k' } }
       }
     }
   });
@@ -972,29 +1040,24 @@ function drawBalanceChart() {
 function drawCatsChart() {
   const ctx = document.getElementById('chart-cats');
   if (!ctx) return;
-  const now = new Date();
+  destroyChart('cats');
+  const now  = new Date();
   const { txs } = monthSummary(now.getMonth(), now.getFullYear());
   const totals = catTotals(txs);
-  const entries = Object.entries(totals).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  const labels = entries.map(([k])=>k);
-  const data   = entries.map(([,v])=>v);
-  const colors = labels.map(k=>CATS[k]?.color||'#94a3b8');
-
-  if (S.charts.cats) {
-    S.charts.cats.data.labels = labels;
-    S.charts.cats.data.datasets[0].data = data;
-    S.charts.cats.data.datasets[0].backgroundColor = colors;
-    S.charts.cats.update(); return;
-  }
+  const entries = Object.entries(totals).sort((a,b) => b[1] - a[1]).slice(0,7);
+  if (!entries.length) return;
 
   S.charts.cats = new Chart(ctx, {
-    type:'doughnut',
-    data:{ labels, datasets:[{ data, backgroundColor:colors, borderWidth:2, borderColor:'#fff' }]},
-    options:{
+    type: 'doughnut',
+    data: {
+      labels: entries.map(([k]) => k),
+      datasets: [{ data: entries.map(([,v]) => v), backgroundColor: entries.map(([k]) => CATS[k]?.color || '#94a3b8'), borderWidth:2, borderColor:'#fff' }]
+    },
+    options: {
       responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{ position:'bottom', labels:{font:{size:11},padding:10,boxWidth:12}},
-        tooltip:{ callbacks:{ label:c=>`${c.label}: ${brl(c.raw)}` }}
+      plugins: {
+        legend: { position:'bottom', labels:{font:{size:11},padding:10,boxWidth:12} },
+        tooltip: { callbacks:{ label: c => `${c.label}: ${brl(c.raw)}` }}
       }
     }
   });
@@ -1003,139 +1066,206 @@ function drawCatsChart() {
 function drawMonthlyChart() {
   const ctx = document.getElementById('chart-monthly');
   if (!ctx) return;
+  destroyChart('monthly');
   const now = new Date();
   const labels=[], inc=[], exp=[];
 
-  for (let i=5; i>=0; i--) {
-    let m=now.getMonth()-i, y=now.getFullYear();
-    if (m<0) { m+=12; y--; }
-    const s = monthSummary(m,y);
-    labels.push(MONTHS[m].substring(0,3)+'/'+String(y).slice(-2));
+  for (let i = 5; i >= 0; i--) {
+    let m = now.getMonth() - i, y = now.getFullYear();
+    if (m < 0) { m += 12; y--; }
+    const s = monthSummary(m, y);
+    labels.push(MONTHS[m].substring(0,3) + '/' + String(y).slice(-2));
     inc.push(s.income);
     exp.push(s.expenses);
   }
 
-  if (S.charts.monthly) {
-    S.charts.monthly.data.labels = labels;
-    S.charts.monthly.data.datasets[0].data = inc;
-    S.charts.monthly.data.datasets[1].data = exp;
-    S.charts.monthly.update(); return;
+  S.charts.monthly = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets: [
+      { label:'Receitas', data:inc, backgroundColor:'rgba(5,150,105,.8)', borderRadius:6 },
+      { label:'Despesas', data:exp, backgroundColor:'rgba(220,38,38,.8)', borderRadius:6 }
+    ]},
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: { legend:{position:'top'}, tooltip:{ callbacks:{ label: c => `${c.dataset.label}: ${brl(c.raw)}` }}},
+      scales: { x:{grid:{display:false}}, y:{grid:{color:'#f1f5f9'}, ticks:{ callback: v => 'R$'+(v/1000).toFixed(0)+'k' }}}
+    }
+  });
+}
+
+function drawIncomeSourcesChart() {
+  const ctx = document.getElementById('chart-income-sources');
+  if (!ctx) return;
+  destroyChart('incsrc');
+  const now = new Date();
+  const labels = [];
+  const datasets = {};
+  Object.keys(INCOME_SOURCES).forEach(src => datasets[src] = []);
+
+  for (let i = 5; i >= 0; i--) {
+    let m = now.getMonth() - i, y = now.getFullYear();
+    if (m < 0) { m += 12; y--; }
+    labels.push(MONTHS[m].substring(0,3) + '/' + String(y).slice(-2));
+    const txs = monthTxs(m, y);
+    const srcs = incomeBySource(txs);
+    Object.keys(INCOME_SOURCES).forEach(src => datasets[src].push(srcs[src] || 0));
   }
 
-  S.charts.monthly = new Chart(ctx, {
-    type:'bar',
-    data:{ labels, datasets:[
-      { label:'Receitas',  data:inc, backgroundColor:'rgba(5,150,105,.8)', borderRadius:6 },
-      { label:'Despesas',  data:exp, backgroundColor:'rgba(220,38,38,.8)',  borderRadius:6 }
-    ]},
-    options:{
+  // Only show sources with any data
+  const activeDatasets = Object.entries(datasets)
+    .filter(([,vals]) => vals.some(v => v > 0))
+    .map(([src, vals]) => ({ label:src, data:vals, backgroundColor:INCOME_SOURCES[src], borderRadius:4, stack:'income' }));
+
+  if (!activeDatasets.length) return;
+
+  S.charts.incsrc = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets: activeDatasets },
+    options: {
       responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{position:'top'},
-        tooltip:{ callbacks:{ label:c=>`${c.dataset.label}: ${brl(c.raw)}` }}
-      },
-      scales:{
-        x:{ grid:{display:false} },
-        y:{ grid:{color:'#f1f5f9'}, ticks:{ callback:v=>'R$'+(v/1000).toFixed(0)+'k' }}
+      plugins: { legend:{position:'bottom', labels:{font:{size:11},padding:10,boxWidth:12}}, tooltip:{ callbacks:{ label: c => `${c.dataset.label}: ${brl(c.raw)}` }}},
+      scales: {
+        x: { grid:{display:false}, stacked:true },
+        y: { grid:{color:'#f1f5f9'}, stacked:true, ticks:{ callback: v => 'R$'+(v/1000).toFixed(0)+'k' }}
       }
     }
   });
 }
 
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  TX HTML
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function txHTML(tx) {
-  const c = CATS[tx.category] || CATS['Outros'];
+  const c   = CATS[tx.category] || CATS['Outros'];
   const pos = tx.amount > 0;
-  const ds  = new Date(tx.date+'T12:00:00').toLocaleDateString('pt-BR');
+  const isCartao = tx.category === 'Cartão de Crédito';
+  const ds  = new Date(tx.date + 'T12:00:00').toLocaleDateString('pt-BR');
+  const srcBadge = (pos && tx.incomeSource) ? `<span style="font-size:.65rem;background:${INCOME_SOURCES[tx.incomeSource]||'#94a3b8'}22;color:${INCOME_SOURCES[tx.incomeSource]||'#94a3b8'};padding:1px 6px;border-radius:8px;font-weight:700;margin-left:4px">${tx.incomeSource}</span>` : '';
+  const cartaoBadge = isCartao ? '<span class="tag-pill cartao" style="margin-left:4px">cartão</span>' : '';
   return `<div class="transaction-item">
     <div class="tx-icon" style="background:${c.bg}">${c.icon}</div>
     <div class="tx-info">
-      <div class="tx-desc">${tx.description}</div>
+      <div class="tx-desc">${tx.description}${srcBadge}${cartaoBadge}</div>
       <div class="tx-meta">${ds} · <span style="color:${c.color};font-weight:600">${tx.category}</span></div>
     </div>
-    <div class="tx-amount ${pos?'positive':'negative'}">${pos?'+':''}${brl(tx.amount)}</div>
+    <div class="tx-amount ${isCartao?'neutral':pos?'positive':'negative'}">${pos?'+':''}${brl(tx.amount)}</div>
   </div>`;
 }
 
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  RENDER EXTRATO
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function renderExtrato() {
-  const { txs, income, expenses, balance } = monthSummary(S.month, S.year);
+  const label = `${MONTHS[S.month]} ${S.year}`;
+  document.getElementById('ext-month').textContent = label;
+  const { txs, income, expenses, balance, cartao } = monthSummary(S.month, S.year);
+
   document.getElementById('ext-income').textContent = brl(income);
   document.getElementById('ext-exp').textContent    = brl(expenses);
+  document.getElementById('ext-cartao').textContent = cartao > 0 ? brl(cartao) : '—';
   const b = document.getElementById('ext-bal');
   b.textContent = brl(balance);
-  b.className   = 'kpi-value '+(balance>=0?'positive':'negative');
+  b.className   = 'kpi-value ' + (balance >= 0 ? 'positive' : 'negative');
+
   renderFilteredTx(txs);
 }
 
 function renderFilteredTx(txs) {
-  const q = (document.getElementById('tx-search')?.value||'').toLowerCase();
-  const filtered = q ? txs.filter(t=>t.description.toLowerCase().includes(q)||t.category.toLowerCase().includes(q)) : txs;
+  const q       = (document.getElementById('tx-search')?.value || '').toLowerCase();
+  const filtered = q ? txs.filter(t => t.description.toLowerCase().includes(q) || t.category.toLowerCase().includes(q)) : txs;
   const el = document.getElementById('full-tx');
   if (!el) return;
-  if (!filtered.length) { el.innerHTML='<div class="empty-state">Nenhuma transação encontrada</div>'; return; }
+  if (!filtered.length) { el.innerHTML = '<div class="empty-state">Nenhuma transação encontrada</div>'; return; }
 
-  // Group by date
   const groups = {};
-  filtered.forEach(tx=>{ (groups[tx.date]=groups[tx.date]||[]).push(tx); });
+  filtered.forEach(tx => { (groups[tx.date] = groups[tx.date] || []).push(tx); });
 
   let html = '';
-  Object.keys(groups).sort((a,b)=>new Date(b)-new Date(a)).forEach(date=>{
-    const d = new Date(date+'T12:00:00');
-    html += `<div style="padding:12px 0 4px;font-size:.7rem;font-weight:700;
-      color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;
-      border-bottom:1px solid var(--border)">
-      ${d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'})}
-    </div>`;
+  Object.keys(groups).sort((a,b) => new Date(b) - new Date(a)).forEach(date => {
+    const d = new Date(date + 'T12:00:00');
+    html += `<div style="padding:12px 0 4px;font-size:.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border)">${d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'})}</div>`;
     html += groups[date].map(txHTML).join('');
   });
   el.innerHTML = html;
 }
 
-function filterTx() {
-  renderFilteredTx(monthTxs(S.month, S.year));
+function filterTx() { renderFilteredTx(monthTxs(S.month, S.year)); }
+
+// ═══════════════════════════════════════════════════════
+//  RENDER RECEITAS
+// ═══════════════════════════════════════════════════════
+function renderReceitas() {
+  const label = `${MONTHS[S.month]} ${S.year}`;
+  document.getElementById('rec-month').textContent = label;
+
+  const txs = monthTxs(S.month, S.year);
+  const srcs = incomeBySource(txs);
+  const total = Object.values(srcs).reduce((s,v) => s + v, 0);
+
+  // Source KPI cards
+  const kpiEl = document.getElementById('source-kpis');
+  const srcEntries = Object.entries(INCOME_SOURCES);
+  let kpiHTML = '';
+  // Total card first
+  kpiHTML += `<div class="source-card" style="border-top:3px solid #1e3a8a">
+    <div class="source-name">Total do Mês</div>
+    <div class="source-value">${brl(total)}</div>
+    <div class="source-count">${Object.keys(srcs).length} fontes</div>
+  </div>`;
+  srcEntries.forEach(([src, color]) => {
+    const v = srcs[src] || 0;
+    const count = txs.filter(t => t.amount > 0 && (t.incomeSource || guessIncomeSource(t.description)) === src).length;
+    if (v === 0 && count === 0) return; // skip empty
+    kpiHTML += `<div class="source-card" style="border-top:3px solid ${color}">
+      <div class="source-name">${src}</div>
+      <div class="source-value" style="color:${color}">${brl(v)}</div>
+      <div class="source-count">${count} entrada${count!==1?'s':''}</div>
+    </div>`;
+  });
+  kpiEl.innerHTML = kpiHTML;
+
+  drawIncomeSourcesChart();
+
+  // Income transactions for current month
+  const incomeTxs = txs.filter(t => t.amount > 0 && t.category !== 'Cartão de Crédito')
+    .sort((a,b) => new Date(b.date) - new Date(a.date));
+
+  const listEl = document.getElementById('income-tx');
+  listEl.innerHTML = incomeTxs.length ? incomeTxs.map(txHTML).join('') : '<div class="empty-state">Sem receitas neste mês</div>';
 }
 
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  RENDER ORÇAMENTO
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function renderOrcamento() {
+  document.getElementById('orc-month').textContent = `${MONTHS[S.month]} ${S.year}`;
   const { txs } = monthSummary(S.month, S.year);
   const totals  = catTotals(txs);
 
-  // Bars
   let barsHTML = '';
   Object.keys(DEFAULT_BUDGETS).forEach(cat => {
-    const limit  = S.budgets[cat] || DEFAULT_BUDGETS[cat];
-    const spent  = totals[cat] || 0;
-    const pct    = Math.min((spent/limit)*100, 100);
-    const cls    = pct>100?'over':pct>75?'warn':'ok';
-    const c      = CATS[cat];
-    barsHTML += `
-      <div class="budget-item">
-        <div class="budget-header">
-          <div class="budget-cat">${c.icon} ${cat}</div>
-          <div class="budget-amounts">
-            <b style="color:${pct>100?'var(--danger)':'var(--text)'}">${brl(spent)}</b>
-            <span style="color:var(--text-muted)"> / ${brl(limit)}</span>
-          </div>
+    const limit = S.budgets[cat] || DEFAULT_BUDGETS[cat];
+    const spent = totals[cat] || 0;
+    const pct   = Math.min((spent / limit) * 100, 100);
+    const cls   = pct > 100 ? 'over' : pct > 75 ? 'warn' : 'ok';
+    const c     = CATS[cat];
+    barsHTML += `<div class="budget-item">
+      <div class="budget-header">
+        <div class="budget-cat">${c.icon} ${cat}</div>
+        <div class="budget-amounts">
+          <b style="color:${pct>100?'var(--danger)':'var(--text)'}">${brl(spent)}</b>
+          <span style="color:var(--text-muted)"> / ${brl(limit)}</span>
         </div>
-        <div class="progress-bar">
-          <div class="progress-fill ${cls}" style="width:${pct}%"></div>
-        </div>
-        ${pct>100?`<div style="font-size:.7rem;color:var(--danger);margin-top:4px">⚠️ Excedeu em ${brl(spent-limit)}</div>`:''}
-      </div>`;
+      </div>
+      <div class="progress-bar"><div class="progress-fill ${cls}" style="width:${pct.toFixed(1)}%"></div></div>
+      ${pct > 100 ? `<div style="font-size:.7rem;color:var(--danger);margin-top:4px">⚠️ Excedeu em ${brl(spent-limit)}</div>` : ''}
+    </div>`;
   });
-  document.getElementById('budget-bars').innerHTML = barsHTML || '<div class="empty-state">Sem despesas</div>';
+  document.getElementById('budget-bars').innerHTML = barsHTML || '<div class="empty-state">Sem despesas neste mês</div>';
 
-  // Form
   let formHTML = '';
-  Object.keys(DEFAULT_BUDGETS).forEach(cat=>{
-    const v = S.budgets[cat]||DEFAULT_BUDGETS[cat];
+  Object.keys(DEFAULT_BUDGETS).forEach(cat => {
+    const v = S.budgets[cat] || DEFAULT_BUDGETS[cat];
     formHTML += `<div class="form-group" style="margin-bottom:10px">
       <label class="form-label">${CATS[cat].icon} ${cat}</label>
       <input type="number" class="form-input" id="bi-${cat}" value="${v}" style="padding:8px 12px">
@@ -1145,39 +1275,69 @@ function renderOrcamento() {
 }
 
 function saveBudgets() {
-  Object.keys(DEFAULT_BUDGETS).forEach(cat=>{
-    const el = document.getElementById('bi-'+cat);
+  Object.keys(DEFAULT_BUDGETS).forEach(cat => {
+    const el = document.getElementById('bi-' + cat);
     if (el && el.value) S.budgets[cat] = parseFloat(el.value);
   });
-  localStorage.setItem('budgets', JSON.stringify(S.budgets));
+  localStorage.setItem('pf_budgets', JSON.stringify(S.budgets));
   renderOrcamento();
-  alert('✅ Limites salvos com sucesso!');
+  alert('✅ Limites salvos!');
 }
 
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  RENDER MENSAL
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function renderMensal() {
   drawMonthlyChart();
   const now = new Date();
-  let html = '';
-  let prev = null;
 
-  for (let i=5; i>=0; i--) {
-    let m=now.getMonth()-i, y=now.getFullYear();
-    if (m<0){m+=12;y--;}
-    const {income,expenses,balance} = monthSummary(m,y);
-    const cur = m===now.getMonth()&&y===now.getFullYear();
+  // Collect all active income sources across 6 months
+  const activeSrcs = new Set();
+  for (let i = 5; i >= 0; i--) {
+    let m = now.getMonth() - i, y = now.getFullYear();
+    if (m < 0) { m += 12; y--; }
+    const txs = monthTxs(m, y);
+    Object.keys(incomeBySource(txs)).forEach(s => activeSrcs.add(s));
+  }
+  const srcList = [...activeSrcs];
+
+  // Build table header
+  const thead = document.getElementById('monthly-thead');
+  let thHTML = '<th>Mês</th>';
+  srcList.forEach(src => { thHTML += `<th style="color:${INCOME_SOURCES[src]||'#333'}">${src}</th>`; });
+  thHTML += '<th style="color:var(--success)">Total Receitas</th>';
+  thHTML += '<th style="color:var(--danger)">Despesas</th>';
+  thHTML += '<th style="color:#7c3aed">Fatura Cartão</th>';
+  thHTML += '<th>Saldo</th>';
+  thHTML += '<th>vs. Ant.</th>';
+  thead.innerHTML = thHTML;
+
+  let html = '';
+  let prevBalance = null;
+
+  for (let i = 5; i >= 0; i--) {
+    let m = now.getMonth() - i, y = now.getFullYear();
+    if (m < 0) { m += 12; y--; }
+    const { txs, income, expenses, balance, cartao } = monthSummary(m, y);
+    const srcs = incomeBySource(txs);
+    const cur  = m === now.getMonth() && y === now.getFullYear();
+
     let varHTML = '—';
-    if (prev!==null) {
-      const diff=balance-prev, pct=prev!==0?Math.round((diff/Math.abs(prev))*100):0;
-      varHTML=`<span style="color:${diff>=0?'var(--success)':'var(--danger)'}">${diff>=0?'▲':'▼'} ${Math.abs(pct)}%</span>`;
+    if (prevBalance !== null) {
+      const diff = balance - prevBalance;
+      const pct  = prevBalance !== 0 ? Math.round((diff / Math.abs(prevBalance)) * 100) : 0;
+      varHTML = `<span style="color:${diff>=0?'var(--success)':'var(--danger)'}">${diff>=0?'▲':'▼'} ${Math.abs(pct)}%</span>`;
     }
-    prev=balance;
-    html+=`<tr ${cur?'style="background:var(--primary-light)"':''}>
-      <td><b>${MONTHS[m]} ${y}</b>${cur?' <span style="font-size:.68rem;color:var(--primary)">(atual)</span>':''}</td>
+    prevBalance = balance;
+
+    let srcCells = srcList.map(src => `<td>${srcs[src] ? brl(srcs[src]) : '—'}</td>`).join('');
+
+    html += `<tr ${cur ? 'style="background:var(--primary-light)"' : ''}>
+      <td><b>${MONTHS[m].substring(0,3)} ${String(y).slice(-2)}</b>${cur?'<span style="font-size:.65rem;color:var(--primary)"> atual</span>':''}</td>
+      ${srcCells}
       <td style="color:var(--success)">${brl(income)}</td>
       <td style="color:var(--danger)">${brl(expenses)}</td>
+      <td style="color:#7c3aed">${cartao > 0 ? brl(cartao) : '—'}</td>
       <td><b style="color:${balance>=0?'var(--success)':'var(--danger)'}">${brl(balance)}</b></td>
       <td>${varHTML}</td>
     </tr>`;
@@ -1185,389 +1345,57 @@ function renderMensal() {
   document.getElementById('monthly-rows').innerHTML = html;
 }
 
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  RENDER CONFIG
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 function renderConfig() {
-  document.getElementById('cfg-id').value     = S.clientId;
-  document.getElementById('cfg-secret').value = S.clientSecret ? '••••••••' : '';
-  setConnectionUI(!S.isDemo);
+  const sheetsUrl = localStorage.getItem('pf_sheets_url') || '';
+  document.getElementById('cfg-sheets-url').value = sheetsUrl;
+  updateDataSummary();
 }
 
-function setConnectionUI(connected) {
-  const badge = document.getElementById('conn-badge');
-  const btnD  = document.getElementById('btn-disconnect');
-  badge.className = 'status-badge ' + (connected?'connected':'disconnected');
-  badge.innerHTML = `<span class="status-dot"></span> ${connected?'Conectado':'Não conectado'}`;
-  btnD.style.display = connected ? '' : 'none';
-}
-
-function saveCredentials() {
-  const id  = document.getElementById('cfg-id').value.trim();
-  const sec = document.getElementById('cfg-secret').value.trim();
-  if (!id || !sec || sec==='••••••••') { alert('Por favor, preencha o Client ID e o Client Secret completos.'); return; }
-  S.clientId=id; S.clientSecret=sec;
-  localStorage.setItem('pfy_id', id);
-  localStorage.setItem('pfy_secret', sec);
-  alert('✅ Credenciais salvas! Agora clique em "Conectar Itaú".');
-}
-
-// ════════════════════════════════════════════════════
-//  PLUGGY API
-// ════════════════════════════════════════════════════
-async function pluggyApiKey() {
-  const r = await fetch('https://api.pluggy.ai/auth',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({clientId:S.clientId,clientSecret:S.clientSecret})
-  });
-  const d = await r.json();
-  if (!d.apiKey) throw new Error('Credenciais inválidas');
-  return d.apiKey;
-}
-
-async function connectBank() {
-  if (!S.clientId||!S.clientSecret) {
-    alert('Insira suas credenciais Pluggy primeiro e clique em Salvar Credenciais.');
-    return;
-  }
-  const btn=document.getElementById('btn-connect');
-  btn.textContent='⏳ Conectando…'; btn.disabled=true;
-  try {
-    const apiKey = await pluggyApiKey();
-    const r = await fetch('https://api.pluggy.ai/connect_token',{
-      method:'POST',
-      headers:{'X-API-KEY':apiKey,'Content-Type':'application/json'},
-      body:JSON.stringify({})
-    });
-    const { accessToken } = await r.json();
-
-    if (typeof PluggyConnect==='undefined') {
-      btn.textContent='🏦 Conectar Itaú'; btn.disabled=false;
-      alert('O widget Pluggy não carregou. Verifique sua conexão com a internet.');
-      return;
-    }
-
-    new PluggyConnect({
-      connectToken: accessToken,
-      onSuccess: async ({item}) => {
-        S.itemId=item.id;
-        localStorage.setItem('pfy_item',item.id);
-        S.isDemo=false;
-        document.getElementById('demo-banner').style.display='none';
-        document.getElementById('mob-tag').textContent = localStorage.getItem('pfy_sandbox') ? 'SANDBOX' : 'AO VIVO';
-        await loadRealData();
-        setConnectionUI(true);
-        showPage('overview');
-        alert('✅ Conta Itaú conectada com sucesso!');
-      },
-      onError: err=>{ console.error(err); alert('Erro ao conectar: '+err.message); },
-      onClose: ()=>{ btn.textContent='🏦 Conectar Itaú'; btn.disabled=false; }
-    }).init();
-  } catch(e) {
-    btn.textContent='🏦 Conectar Itaú'; btn.disabled=false;
-    alert('Erro: '+e.message);
-  }
-}
-
-// ════════════════════════════════════════════════════
-//  PLUGGY SANDBOX — conecta banco de teste sem precisar de produção
-// ════════════════════════════════════════════════════
-async function connectSandbox() {
-  if (!S.clientId || !S.clientSecret) {
-    alert('Insira suas credenciais Pluggy primeiro e clique em Salvar Credenciais.');
-    return;
-  }
-  const btn = document.getElementById('btn-sandbox');
-  btn.textContent = '⏳ Buscando sandbox…'; btn.disabled = true;
-  try {
-    const apiKey = await pluggyApiKey();
-    const cr = await fetch('https://api.pluggy.ai/connectors?sandbox=true', {
-      headers: { 'X-API-KEY': apiKey }
-    });
-    const cd = await cr.json();
-    const connectors = (cd.results || []).filter(c => c.name && c.name.toLowerCase().includes('pluggy'));
-    const allSandbox = cd.results || [];
-    if (!connectors.length) throw new Error('Conector Pluggy Bank não encontrado. Disponíveis: ' + (cd.results||[]).map(c=>c.name).join(', '));
-    const connector = connectors[0];
-    btn.textContent = '⏳ Conectando ' + connector.name + '…';
-    const ir = await fetch('https://api.pluggy.ai/items', {
-      method: 'POST',
-      headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ connectorId: connector.id, parameters: { user: 'user-ok', password: 'password-ok' } })
-    });
-    const item = await ir.json();
-    if (item.code || item.error) throw new Error(item.message || item.code || JSON.stringify(item));
-    btn.textContent = '⏳ Aguardando dados…';
-    for (let i = 0; i < 10; i++) {
-      await new Promise(res => setTimeout(res, 3000));
-      const sr = await fetch('https://api.pluggy.ai/items/' + item.id, { headers: { 'X-API-KEY': apiKey } });
-      const st = await sr.json();
-      if (st.status === 'UPDATED' || st.status === 'PARTIAL_SUCCESS') break;
-      if (st.status === 'LOGIN_ERROR' || st.status === 'ERROR') throw new Error('Erro sandbox: ' + st.status);
-    }
-    S.itemId = item.id;
-    localStorage.setItem('pfy_item', item.id);
-    localStorage.setItem('pfy_sandbox', '1');
-    S.isDemo = false;
-    document.getElementById('demo-banner').style.display = 'none';
-    document.getElementById('mob-tag').textContent = 'SANDBOX';
-    await loadRealData();
-    setConnectionUI(true);
-    showPage('overview');
-    alert('✅ Sandbox conectado! Dados de teste carregados.');
-  } catch (e) {
-    btn.textContent = '🧪 Testar Sandbox';
-    btn.disabled = false;
-    alert('Erro sandbox: ' + e.message);
-  }
-}
-
-// ════════════════════════════════════════════════════
-//  IMPORTAR CSV / OFX DO ITAÚ
-// ════════════════════════════════════════════════════
-function importCSV(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const st = document.getElementById('csv-status');
-  st.textContent = '⏳ Lendo arquivo…';
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const text = e.target.result;
-      let txs = file.name.toLowerCase().endsWith('.ofx') ? parseOFX(text) : parseCSVItau(text);
-      if (!txs.length) throw new Error('Nenhuma transação encontrada. Arquivo: ' + file.name + ', Tamanho: ' + text.length + ' bytes. Verifique se é um extrato do Itaú válido.');
-      const existing = S.isDemo ? [] : S.txs;
-      const ids = new Set(existing.map(t => t.id));
-      S.txs = [...existing, ...txs.filter(t => !ids.has(t.id))].sort((a, b) => new Date(b.date) - new Date(a.date));
-      if (S.isDemo) { S.balance = S.txs.reduce((s, t) => s + t.amount, 0); document.getElementById('kpi-saldo').textContent = brl(S.balance); }
-      // Clear any stale Pluggy item so state is clean
-      localStorage.removeItem('pfy_item'); localStorage.removeItem('pfy_sandbox');
-      S.itemId = ''; S.isDemo = false;
-      document.getElementById('demo-banner').style.display = 'none';
-      document.getElementById('mob-tag').textContent = 'CSV';
-      setConnectionUI(true);
-      document.getElementById('last-sync').textContent = 'Importado: ' + file.name;
-      // Navigate to most recent month with data
-      const mostRecent = S.txs[0]; // already sorted desc by date
-      if (mostRecent) {
-        const d = new Date(mostRecent.date + 'T12:00:00');
-        S.month = d.getMonth(); S.year = d.getFullYear();
-        const label = MONTHS[S.month] + ' ' + S.year;
-        ['ext-month','orc-month'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=label; });
-      }
-      // Extract real balance from OFX LEDGERBAL
-      if (file.name.toLowerCase().endsWith('.ofx')) {
-        const balM = text.match(/<BALAMT>([^<\r\n]+)/i);
-        if (balM) {
-          const realBal = parseFloat(balM[1].replace(',','.'));
-          if (!isNaN(realBal)) {
-            S.balance = realBal;
-            document.getElementById('kpi-saldo').textContent = brl(realBal);
-          }
-        }
-        // Get account info
-        const accM = text.match(/<ACCTID>([^<\r\n]+)/i);
-        if (accM) document.getElementById('sb-account').textContent = 'Conta ' + accM[1].trim();
-      }
-      document.getElementById('sb-account').textContent = document.getElementById('sb-account').textContent || 'Extrato importado';
-      renderAll(); showPage('overview');
-      st.textContent = '✅ ' + txs.length + ' transações importadas!';
-    } catch (err) { st.textContent = '❌ Erro: ' + err.message; }
-  };
-  reader.readAsText(file, 'latin1');
-}
-
-function parseCSVItau(text) {
-  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-  const txs = [];
-  let dataIdx = -1, descIdx = -1, valIdx = -1;
-  for (let i = 0; i < Math.min(10, lines.length); i++) {
-    const cols = lines[i].split(/[;,]/).map(c => c.replace(/"/g, '').trim().toLowerCase());
-    const dIdx = cols.findIndex(c => c.includes('data') || c.includes('lançamento'));
-    const vIdx = cols.findIndex(c => c.includes('valor') || c.includes('value'));
-    const hIdx = cols.findIndex(c => c.includes('histórico') || c.includes('descri') || c.includes('memo'));
-    if (dIdx >= 0 && vIdx >= 0) { dataIdx = dIdx; valIdx = vIdx; descIdx = hIdx >= 0 ? hIdx : (dIdx === 0 ? 1 : 0); lines.splice(0, i + 1); break; }
-  }
-  if (dataIdx < 0) { dataIdx = 0; descIdx = 1; valIdx = 2; }
-  const SEP = lines[0] && lines[0].includes(';') ? ';' : ',';
-  lines.forEach((line, idx) => {
-    if (!line || line.startsWith('Saldo') || line.startsWith('Total')) return;
-    const cols = line.split(SEP).map(c => c.replace(/"/g, '').trim());
-    if (cols.length < 3) return;
-    let dateStr = cols[dataIdx] || '', date;
-    if (/\d{2}\/\d{2}\/\d{4}/.test(dateStr)) { const [d, m, y] = dateStr.split('/'); date = y + '-' + m.padStart(2,'0') + '-' + d.padStart(2,'0'); }
-    else if (/\d{4}-\d{2}-\d{2}/.test(dateStr)) { date = dateStr.substring(0,10); }
-    else return;
-    const amount = parseFloat((cols[valIdx] || '').replace(/R\$\s*/,'').replace(/\./g,'').replace(',','.'));
-    if (isNaN(amount) || amount === 0) return;
-    const description = cols[descIdx] || 'Sem descrição';
-    txs.push({ id: 'csv-' + idx + '-' + date, description, amount, date, category: guessCategory(description), type: amount < 0 ? 'DEBIT' : 'CREDIT' });
-  });
-  return txs;
-}
-
-function parseOFX(text) {
-  // Handles both SGML (Itaú format, no closing tags) and XML OFX formats
-  const txs = [];
-  // Split on <STMTTRN> — works regardless of whether </STMTTRN> exists
-  const parts = text.split(/<STMTTRN>/i);
-  parts.slice(1).forEach(function(block, idx) {
-    // Trim at </STMTTRN> if present
-    const endIdx = block.search(/<\/STMTTRN>/i);
-    if (endIdx > 0) block = block.substring(0, endIdx);
-    const get = function(tag) {
-      const m = block.match(new RegExp('<' + tag + '>([^\r\n<]+)', 'i'));
-      return m ? m[1].trim() : '';
-    };
-    const dtRaw = get('DTPOSTED') || get('DTUSER');
-    if (!dtRaw || dtRaw.length < 8) return;
-    // Handle "20260502000000[-3:BRT]" or "20260502" — just take first 8 chars
-    const date = dtRaw.substring(0,4) + '-' + dtRaw.substring(4,6) + '-' + dtRaw.substring(6,8);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
-    const amtRaw = get('TRNAMT') || get('AMT') || '';
-    const amount = parseFloat(amtRaw.replace(',','.'));
-    if (isNaN(amount) || amount === 0) return;
-    const description = get('MEMO') || get('NAME') || get('FITID') || 'Sem descrição';
-    txs.push({ id: 'ofx-' + idx + '-' + date, description, amount, date, category: guessCategory(description), type: amount < 0 ? 'DEBIT' : 'CREDIT' });
-  });
-  return txs;
-}
-
-function guessCategory(desc) {
-  const d = desc.toLowerCase();
-  // Receita / entrada
-  if (/remuner|juros poup|rend poup|sispag|odoutor|herrero|rallo|salário|salario|freelan/.test(d)) return 'Receita';
-  if (/pix transf.*receb|ted receb/.test(d)) return 'Receita';
-  // Moradia / utilidades
-  if (/copel|cemig|enel|cpfl|coelba|elektro|eletro/.test(d)) return 'Moradia';
-  if (/sanepar|sabesp|cedae|cagece|corsan|saneago|cosanpa/.test(d)) return 'Moradia';
-  if (/condomin|aluguel|shimizu|imoveis|imóveis/.test(d)) return 'Moradia';
-  if (/claro|vivo|tim|oi |net |nextel|telefon|internet|fibra/.test(d)) return 'Moradia';
-  // Saúde
-  if (/farmácia|farmacia|drogasil|raia|ultrafarma|drogaria|medicinal/.test(d)) return 'Saúde';
-  if (/hospital|médico|medico|consulta|unimed|plano|amil|sulamérica|bradesco saúde/.test(d)) return 'Saúde';
-  if (/laborat|exame|clinica|clínica/.test(d)) return 'Saúde';
-  // Financeiro / impostos / boletos
-  if (/receita fed|prefeitura|iptu|ipva|inss|fgts|irpf|darf|gnre/.test(d)) return 'Financeiro';
-  if (/pag tit|pag boleto|dda|da  |itau mc|pers black|uniclass|bradesco|caixa|bco|banco/.test(d)) return 'Financeiro';
-  if (/juros|iof|tarifa|cpmf|anuidade|seguro|previdencia|prev/.test(d)) return 'Financeiro';
-  if (/coaplan|contab|contador/.test(d)) return 'Financeiro';
-  // Transporte
-  if (/uber|99|taxi|cabify|estacion|combustiv|gasolina|posto|ipiranga|shell|pedágio|toll|metrô/.test(d)) return 'Transporte';
-  // Alimentação
-  if (/ifood|rappi|mcdon|burguer|pizza|restaur|lanche|padaria|açaí|sushi|bar |cafe |starbucks|supermercado|mercado|extra |pao de acucar/.test(d)) return 'Alimentação';
-  // Entretenimento
-  if (/netflix|spotify|amazon prime|hbo|disney|cinema|show|teatro|steam|playstation/.test(d)) return 'Entretenimento';
-  // Compras
-  if (/amazon|mercado livre|shopee|magazine|americanas|ponto frio|renner|c&a|zara|hm |pagar.me|pagar me/.test(d)) return 'Compras';
-  // Educação
-  if (/escola|faculdade|curso|udemy|alura|mensalidade|colégio|colegio/.test(d)) return 'Educação';
-  // Transferência PIX genérico
-  if (/pix transf|ted|doc |transferência|transferencia/.test(d)) return 'Transferência';
-  return 'Outros';
-}
-
-function disconnectBank() {
-  if (!confirm('Desconectar? Os dados carregados serão removidos.')) return;
-  localStorage.removeItem('pfy_item');
-  localStorage.removeItem('pfy_sandbox');
-  S.itemId=''; S.isDemo=true; S.balance=8420.35;
-  S.txs=makeDemo();
-  setConnectionUI(false);
-  document.getElementById('demo-banner').style.display='';
-  document.getElementById('mob-tag').textContent='DEMO';
-  document.getElementById('last-sync').textContent='Modo demonstração';
-  renderAll();
-}
-
-async function loadRealData() {
-  try {
-    const apiKey = await pluggyApiKey();
-    // Accounts
-    const accRes = await fetch(`https://api.pluggy.ai/accounts?itemId=${S.itemId}`,{headers:{'X-API-KEY':apiKey}});
-    const accData = await accRes.json();
-    const accounts = accData.results||[];
-    const checking = accounts.find(a=>a.type==='BANK');
-    if (checking) {
-      S.balance=checking.balance;
-      document.getElementById('kpi-saldo').textContent=brl(S.balance);
-      document.getElementById('sb-account').textContent=checking.name;
-    }
-
-    // Transactions — last 3 months
-    const to   = new Date().toISOString().split('T')[0];
-    const from = (() => { const d=new Date(); d.setMonth(d.getMonth()-2); d.setDate(1); return d.toISOString().split('T')[0]; })();
-
-    let all=[];
-    for (const acc of accounts.filter(a=>a.type==='BANK')) {
-      const r = await fetch(`https://api.pluggy.ai/transactions?accountId=${acc.id}&from=${from}&to=${to}&pageSize=500`,{headers:{'X-API-KEY':apiKey}});
-      const d = await r.json();
-      (d.results||[]).forEach(tx=>{
-        all.push({
-          id:tx.id, description:tx.description,
-          amount:tx.amount, date:tx.date.split('T')[0],
-          category:pluggyToLocal(tx.category), type:tx.type
-        });
-      });
-    }
-    S.txs=all.sort((a,b)=>new Date(b.date)-new Date(a.date));
-
-    const now=new Date();
-    document.getElementById('last-sync').textContent='Atualizado '+now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-    renderAll();
-  } catch(e) {
-    console.error(e);
-    alert('Erro ao carregar dados: '+e.message);
-  }
-}
-
-async function refreshData() {
-  if (S.isDemo) { S.txs=makeDemo(); renderAll(); return; }
-  if (S.itemId&&S.clientId&&S.clientSecret) await loadRealData();
-}
-
+// ═══════════════════════════════════════════════════════
+//  RENDER ALL
+// ═══════════════════════════════════════════════════════
 function renderAll() {
-  if (S.page==='overview')  renderOverview();
-  if (S.page==='extrato')   renderExtrato();
-  if (S.page==='orcamento') renderOrcamento();
-  if (S.page==='mensal')    renderMensal();
-  if (S.page==='config')    renderConfig();
+  if (S.page === 'overview')  renderOverview();
+  if (S.page === 'extrato')   renderExtrato();
+  if (S.page === 'receitas')  renderReceitas();
+  if (S.page === 'orcamento') renderOrcamento();
+  if (S.page === 'mensal')    renderMensal();
+  if (S.page === 'config')    renderConfig();
 }
 
-// ════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  INIT
-// ════════════════════════════════════════════════════
-async function init() {
-  // Restore month to current
-  const now=new Date();
-  S.month=now.getMonth(); S.year=now.getFullYear();
-  ['ext-month','orc-month'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.textContent=`${MONTHS[S.month]} ${S.year}`;
+// ═══════════════════════════════════════════════════════
+function init() {
+  const now = new Date();
+  S.month = now.getMonth();
+  S.year  = now.getFullYear();
+  const label = `${MONTHS[S.month]} ${S.year}`;
+  ['ext-month','orc-month','rec-month'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.textContent = label;
   });
 
-  if (S.itemId && S.clientId && S.clientSecret) {
-    S.isDemo=false;
-    document.getElementById('demo-banner').style.display='none';
-    document.getElementById('mob-tag').textContent='AO VIVO';
-    document.getElementById('last-sync').textContent='Carregando…';
-    try {
-      await loadRealData();
-      setConnectionUI(true);
-    } catch {
-      S.isDemo=true; S.txs=makeDemo();
-      document.getElementById('demo-banner').style.display='';
-      document.getElementById('mob-tag').textContent='DEMO';
-      renderAll();
-    }
-  } else {
-    S.txs=makeDemo();
-    renderAll();
+  const hasSavedData = loadTxs();
+  if (hasSavedData) {
+    document.getElementById('last-sync').textContent = 'Dados do localStorage';
+    document.getElementById('mob-tag').textContent   = 'OFX';
   }
+
+  renderOverview();
 }
 
-init();
+// ── LOCK SCREEN SETUP ──
+(function() {
+  const stored = localStorage.getItem('pf_hash');
+  if (!stored) {
+    document.getElementById('lock-sub').textContent  = 'Primeiro acesso — defina sua senha';
+    document.getElementById('lock-hint').style.display = '';
+  }
+  document.getElementById('lock-pw').focus();
+})();
 </script>
 </body>
 </html>
