@@ -917,7 +917,7 @@ async function syncToSheets() {
     const res = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({ action: 'save', txs: S.txs }),
-      headers: { 'Content-Type': 'application/json' }
+      // sem Content-Type para evitar CORS preflight
     });
     const data = await res.json();
     if (data.ok) st.textContent = `✅ ${S.txs.length} transações sincronizadas!`;
